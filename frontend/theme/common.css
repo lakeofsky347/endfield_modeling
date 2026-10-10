@@ -1,0 +1,57 @@
+/* 两个主题共用：背景画布、加载遮罩 */
+html{background-color:#0b0c0e}html[data-theme="hsr"]{background-color:#070918}
+#bg-gl{position:fixed;inset:0;width:100vw;height:100vh;z-index:-1;pointer-events:none;display:block}
+html.has-gl{background-image:none!important}html.has-gl body{background:transparent!important}
+#loader{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;background:var(--ld-bg);transition:opacity .5s ease}
+#loader.done{opacity:0;pointer-events:none}
+#loader .ld-text{font-size:13px;letter-spacing:4px;color:var(--ld-fg)}
+#loader .ld-err{font-size:12px;color:#f07a7a;max-width:70vw;text-align:center;white-space:pre-wrap}
+#loader.error .ld-mark{animation:none;opacity:.4}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.001s!important;transition-duration:.001s!important}}
+/* 低置信度标记：引擎给元素加 data-confidence="low" 即可 */
+[data-confidence="low"]{position:relative;outline:1px dashed rgba(240,179,90,.55);outline-offset:2px}
+[data-confidence="low"]::after{content:"待复核";display:inline-block;margin-left:6px;padding:0 6px;font-size:10.5px;line-height:16px;
+  color:#f3c27a;background:rgba(240,179,90,.12);border:1px solid rgba(240,179,90,.45);border-radius:8px;vertical-align:1px;white-space:nowrap}
+html[data-theme="endfield"] [data-confidence="low"]::after{border-radius:0;font-family:ui-monospace,Menlo,monospace;content:"UNVERIFIED"}
+/* 角色头像 .gava（avatar.js 填充）：有图叠 img，无图/失败显示徽章（属性色底 + 首字）。尺寸：--gava-size 或 .sm/.md/.lg */
+.gava{--gava-size:1.4em;--gava-c:#8a8f98;position:relative;display:inline-block;flex:none;width:var(--gava-size);height:var(--gava-size);
+  vertical-align:middle;line-height:1;border-radius:22%;background:radial-gradient(circle at 35% 30%,color-mix(in srgb,var(--gava-c) 70%,#fff 10%),color-mix(in srgb,var(--gava-c) 45%,#0c0d10));
+  box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--gava-c) 70%,transparent);user-select:none}
+.gava.sm{--gava-size:20px}.gava.md{--gava-size:32px}.gava.lg{--gava-size:56px}
+.gava>.gava-t,.gava>img{position:absolute;inset:0;width:100%;height:100%;border-radius:inherit}
+.gava>.gava-t{display:grid;place-items:center;font-style:normal;font-weight:700;font-size:calc(var(--gava-size)*.5);color:#fff;
+  text-shadow:0 1px 2px rgba(0,0,0,.55);font-family:inherit;letter-spacing:0;overflow:hidden}
+.gava>img{object-fit:cover;opacity:0;transition:opacity .25s}
+.gava.gava-loaded>img{opacity:1}.gava.gava-loaded>.gava-t{visibility:hidden}
+/* 属性色：每个游戏各自一套；data-gava-el 由 avatar.js 从 data-el 归一（英文键或中文名都认） */
+html[data-theme="hsr"] .gava[data-gava-el="physical"]{--gava-c:#cfd3dc}html[data-theme="hsr"] .gava[data-gava-el="fire"]{--gava-c:#f36b45}
+html[data-theme="hsr"] .gava[data-gava-el="ice"]{--gava-c:#62c9f2}html[data-theme="hsr"] .gava[data-gava-el="lightning"]{--gava-c:#c77bf2}
+html[data-theme="hsr"] .gava[data-gava-el="wind"]{--gava-c:#5fdca3}html[data-theme="hsr"] .gava[data-gava-el="quantum"]{--gava-c:#8c86f5}
+html[data-theme="hsr"] .gava[data-gava-el="imaginary"]{--gava-c:#f2d15a}
+html[data-theme="endfield"] .gava[data-gava-el="physical"]{--gava-c:#9a9a9a}html[data-theme="endfield"] .gava[data-gava-el="heat"]{--gava-c:#ff623d}
+html[data-theme="endfield"] .gava[data-gava-el="cryo"]{--gava-c:#21c6d0}html[data-theme="endfield"] .gava[data-gava-el="electric"]{--gava-c:#ffc000}
+html[data-theme="endfield"] .gava[data-gava-el="nature"]{--gava-c:#9edc23}
+.gava[data-gava-el="glacio"]{--gava-c:var(--glacio,#41aefb)}.gava[data-gava-el="fusion"]{--gava-c:var(--fusion,#f0744e)}
+.gava[data-gava-el="electro"]{--gava-c:var(--electro,#b46bff)}.gava[data-gava-el="aero"]{--gava-c:var(--aero,#55e6b5)}
+.gava[data-gava-el="spectro"]{--gava-c:var(--spectro,#f3df6a)}.gava[data-gava-el="havoc"]{--gava-c:var(--havoc,#e649a6)}
+html[data-theme="ww"] .gava[data-gava-el="physical"]{--gava-c:var(--physical,#c9c9c9)}
+/* 星铁：圆形 + 细星环 */
+html[data-theme="hsr"] .gava{border-radius:50%;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--gava-c) 80%,#fff 20%),0 0 calc(var(--gava-size)*.18) color-mix(in srgb,var(--gava-c) 55%,transparent)}
+html[data-theme="hsr"] .gava::after{content:"";position:absolute;inset:calc(var(--gava-size)*-.09);border-radius:50%;pointer-events:none;
+  border:1px solid color-mix(in srgb,var(--gava-c) 45%,transparent);
+  background:radial-gradient(circle at 50% 0,#fff 0 1.2px,transparent 1.6px),radial-gradient(circle at 93% 75%,color-mix(in srgb,var(--gava-c) 60%,#fff) 0 1px,transparent 1.4px)}
+html[data-theme="hsr"] .gava.sm::after{inset:-2px;background:none}
+/* 终末地：切角方框 + 黄色角标 */
+html[data-theme="endfield"] .gava{border-radius:0;clip-path:polygon(0 0,calc(100% - 24%) 0,100% 24%,100% 100%,24% 100%,0 calc(100% - 24%));
+  background:linear-gradient(160deg,color-mix(in srgb,var(--gava-c) 55%,#1a1b1d),color-mix(in srgb,var(--gava-c) 25%,#0d0e10));
+  box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--gava-c) 75%,transparent)}
+html[data-theme="endfield"] .gava>.gava-t{font-family:ui-monospace,Menlo,"Microsoft YaHei",monospace}
+html[data-theme="endfield"] .gava::after{content:"";position:absolute;left:0;top:0;width:38%;height:2px;background:#ffd200;pointer-events:none}
+html[data-theme="endfield"] .gava::before{content:"";position:absolute;right:0;top:0;width:24%;height:24%;z-index:1;pointer-events:none;
+  background:linear-gradient(225deg,transparent calc(50% - 1px),#ffd200 calc(50% - 1px) calc(50% + .8px),transparent calc(50% + .8px))}
+/* 鸣潮：菱形金边（clip-path 裁成菱形，图片不用反向旋转） */
+html[data-theme="ww"] .gava{border-radius:0;clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%);box-shadow:none;
+  background:linear-gradient(135deg,var(--gold2,#f1d9a0),var(--gold,#d9b46a) 45%,#8a7445)}
+html[data-theme="ww"] .gava{--gava-bw:max(1.5px,calc(var(--gava-size)*.045))}
+html[data-theme="ww"] .gava>.gava-t,html[data-theme="ww"] .gava>img{inset:var(--gava-bw);width:calc(100% - 2*var(--gava-bw));height:calc(100% - 2*var(--gava-bw));clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%);border-radius:0}
+html[data-theme="ww"] .gava>.gava-t{background:radial-gradient(circle at 50% 35%,color-mix(in srgb,var(--gava-c) 70%,#fff 8%),color-mix(in srgb,var(--gava-c) 35%,#0c0d10));font-size:calc(var(--gava-size)*.4)}

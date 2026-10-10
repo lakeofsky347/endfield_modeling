@@ -1,0 +1,203 @@
+{
+ "chr_0002_endminm": {
+  "src": "https://raw.githubusercontent.com/Wanye-7300/baker-dx/957bbd4180dc33a4b8fab6c12dbfcc143a1e9006/assets/extracted/avatar/operator/icon_round_chr_0002_endminm.png",
+  "file": "chr_0002_endminm.webp",
+  "name": "管理员（男）",
+  "fetched": "2026-10-09T23:44:11+08:00"
+ },
+ "chr_0003_endminf": {
+  "src": "https://raw.githubusercontent.com/Wanye-7300/baker-dx/957bbd4180dc33a4b8fab6c12dbfcc143a1e9006/assets/extracted/avatar/operator/icon_round_chr_0003_endminf.png",
+  "file": "chr_0003_endminf.webp",
+  "name": "管理员（女）",
+  "fetched": "2026-10-09T23:44:12+08:00"
+ },
+ "chr_0009_azrila": {
+  "src": "https://raw.githubusercontent.com/Wanye-7300/baker-dx/957bbd4180dc33a4b8fab6c12dbfcc143a1e9006/assets/extracted/avatar/operator/icon_round_chr_0009_azrila.png",
+  "file": "chr_0009_azrila.webp",
+  "name": "余烬",
+  "fetched": "2026-10-09T23:44:13+08:00"
+ },
+ "chr_0013_aglina": {
+  "src": "https://raw.githubusercontent.com/Wanye-7300/baker-dx/957bbd4180dc33a4b8fab6c12dbfcc143a1e9006/assets/extracted/avatar/operator/icon_round_chr_0013_aglina.png",
+  "file": "chr_0013_aglina.webp",
+  "name": "洁尔佩塔",
+  "fetched": "2026-10-09T23:44:14+08:00"
+ },
+ "chr_0015_lifeng": {
+  "src": "https://raw.githubusercontent.com/Wanye-7300/baker-dx/957bbd4180dc33a4b8fab6c12dbfcc143a1e9006/assets/extracted/avatar/operator/icon_round_chr_0015_lifeng.png",
+  "file": "chr_0015_lifeng.webp",
+  "name": "黎风",
+  "fetched": "2026-10-09T23:44:15+08:00"
+ },
+ "chr_0016_laevat": {
+  "src": "https://raw.githubusercontent.com/Wanye-7300/baker-dx/957bbd4180dc33a4b8fab6c12dbfcc143a1e9006/assets/extracted/avatar/operator/icon_round_chr_0016_laevat.png",
+  "file": "chr_0016_laevat.webp",
+  "name": "莱万汀",
+  "fetched": "2026-10-09T23:44:16+08:00"
+ },
+ "chr_0017_yvonne": {
+  "src": "https://raw.githubusercontent.com/Wanye-7300/baker-dx/957bbd4180dc33a4b8fab6c12dbfcc143a1e9006/assets/extracted/avatar/operator/icon_round_chr_0017_yvonne.png",
+  "file": "chr_0017_yvonne.webp",
+  "name": "伊冯",
+  "fetched": "2026-10-09T23:44:18+08:00"
+ },
+ "chr_0025_ardelia": {
+  "src": "https://raw.githubusercontent.com/Wanye-7300/baker-dx/957bbd4180dc33a4b8fab6c12dbfcc143a1e9006/assets/extracted/avatar/operator/icon_round_chr_0025_ardelia.png",
+  "file": "chr_0025_ardelia.webp",
+  "name": "艾尔黛拉",
+  "fetched": "2026-10-09T23:44:19+08:00"
+ },
+ "chr_0026_lastrite": {
+  "src": "https://raw.githubusercontent.com/Wanye-7300/baker-dx/957bbd4180dc33a4b8fab6c12dbfcc143a1e9006/assets/extracted/avatar/operator/icon_round_chr_0026_lastrite.png",
+  "file": "chr_0026_lastrite.webp",
+  "name": "别礼",
+  "fetched": "2026-10-09T23:44:20+08:00"
+ },
+ "chr_0027_tangtang": {
+  "src": "https://raw.githubusercontent.com/Wanye-7300/baker-dx/957bbd4180dc33a4b8fab6c12dbfcc143a1e9006/assets/extracted/avatar/operator/icon_round_chr_0027_tangtang.png",
+  "file": "chr_0027_tangtang.webp",
+  "name": "汤汤",
+  "fetched": "2026-10-09T23:44:21+08:00"
+ },
+ "chr_0028_wulfa": {
+  "src": "https://raw.githubusercontent.com/Wanye-7300/baker-dx/957bbd4180dc33a4b8fab6c12dbfcc143a1e9006/assets/extracted/avatar/operator/icon_round_chr_0028_wulfa.png",
+  "file": "chr_0028_wulfa.webp",
+  "name": "洛茜",
+  "fetched": "2026-10-09T23:44:22+08:00"
+ },
+ "chr_0029_pograni": {
+  "src": "https://raw.githubusercontent.com/Wanye-7300/baker-dx/957bbd4180dc33a4b8fab6c12dbfcc143a1e9006/assets/extracted/avatar/operator/icon_round_chr_0029_pograni.png",
+  "file": "chr_0029_pograni.webp",
+  "name": "骏卫",
+  "fetched": "2026-10-09T23:44:23+08:00"
+ },
+ "chr_0030_zhuangfy": {
+  "src": "https://raw.githubusercontent.com/Wanye-7300/baker-dx/957bbd4180dc33a4b8fab6c12dbfcc143a1e9006/assets/extracted/avatar/operator/icon_round_chr_0030_zhuangfy.png",
+  "file": "chr_0030_zhuangfy.webp",
+  "name": "庄方宜",
+  "fetched": "2026-10-09T23:44:24+08:00"
+ },
+ "chr_0031_mifu": {
+  "src": "https://raw.githubusercontent.com/Wanye-7300/baker-dx/957bbd4180dc33a4b8fab6c12dbfcc143a1e9006/assets/extracted/avatar/operator/icon_round_chr_0031_mifu.png",
+  "file": "chr_0031_mifu.webp",
+  "name": "弭弗",
+  "fetched": "2026-10-09T23:44:25+08:00"
+ },
+ "chr_0032_lizhiyan": {
+  "src": "https://raw.githubusercontent.com/Wanye-7300/baker-dx/957bbd4180dc33a4b8fab6c12dbfcc143a1e9006/assets/extracted/avatar/operator/icon_round_chr_0032_lizhiyan.png",
+  "file": "chr_0032_lizhiyan.webp",
+  "name": "诀",
+  "fetched": "2026-10-09T23:44:26+08:00"
+ },
+ "chr_0033_camille": {
+  "src": "https://raw.githubusercontent.com/Wanye-7300/baker-dx/957bbd4180dc33a4b8fab6c12dbfcc143a1e9006/assets/extracted/avatar/operator/icon_round_chr_0033_camille.png",
+  "file": "chr_0033_camille.webp",
+  "name": "卡缪",
+  "fetched": "2026-10-09T23:44:27+08:00"
+ },
+ "chr_0034_typhoea": {
+  "src": "https://raw.githubusercontent.com/Wanye-7300/baker-dx/957bbd4180dc33a4b8fab6c12dbfcc143a1e9006/assets/extracted/avatar/operator/icon_round_chr_0034_typhoea.png",
+  "file": "chr_0034_typhoea.webp",
+  "name": "提弗洛斯",
+  "fetched": "2026-10-09T23:44:29+08:00"
+ },
+ "chr_0035_liino": {
+  "src": "https://raw.githubusercontent.com/Wanye-7300/baker-dx/957bbd4180dc33a4b8fab6c12dbfcc143a1e9006/assets/extracted/avatar/operator/icon_round_chr_0035_liino.png",
+  "file": "chr_0035_liino.webp",
+  "name": "梨诺",
+  "fetched": "2026-10-09T23:44:30+08:00"
+ },
+ "chr_0004_pelica": {
+  "src": "https://raw.githubusercontent.com/Wanye-7300/baker-dx/957bbd4180dc33a4b8fab6c12dbfcc143a1e9006/assets/extracted/avatar/operator/icon_round_chr_0004_pelica.png",
+  "file": "chr_0004_pelica.webp",
+  "name": "佩丽卡",
+  "fetched": "2026-10-09T23:44:31+08:00"
+ },
+ "chr_0005_chen": {
+  "src": "https://raw.githubusercontent.com/Wanye-7300/baker-dx/957bbd4180dc33a4b8fab6c12dbfcc143a1e9006/assets/extracted/avatar/operator/icon_round_chr_0005_chen.png",
+  "file": "chr_0005_chen.webp",
+  "name": "陈千语",
+  "fetched": "2026-10-09T23:44:32+08:00"
+ },
+ "chr_0006_wolfgd": {
+  "src": "https://raw.githubusercontent.com/Wanye-7300/baker-dx/957bbd4180dc33a4b8fab6c12dbfcc143a1e9006/assets/extracted/avatar/operator/icon_round_chr_0006_wolfgd.png",
+  "file": "chr_0006_wolfgd.webp",
+  "name": "狼卫",
+  "fetched": "2026-10-09T23:44:33+08:00"
+ },
+ "chr_0007_ikut": {
+  "src": "https://raw.githubusercontent.com/Wanye-7300/baker-dx/957bbd4180dc33a4b8fab6c12dbfcc143a1e9006/assets/extracted/avatar/operator/icon_round_chr_0007_ikut.png",
+  "file": "chr_0007_ikut.webp",
+  "name": "弧光",
+  "fetched": "2026-10-09T23:44:34+08:00"
+ },
+ "chr_0011_seraph": {
+  "src": "https://raw.githubusercontent.com/Wanye-7300/baker-dx/957bbd4180dc33a4b8fab6c12dbfcc143a1e9006/assets/extracted/avatar/operator/icon_round_chr_0011_seraph.png",
+  "file": "chr_0011_seraph.webp",
+  "name": "赛希",
+  "fetched": "2026-10-09T23:44:35+08:00"
+ },
+ "chr_0012_avywen": {
+  "src": "https://raw.githubusercontent.com/Wanye-7300/baker-dx/957bbd4180dc33a4b8fab6c12dbfcc143a1e9006/assets/extracted/avatar/operator/icon_round_chr_0012_avywen.png",
+  "file": "chr_0012_avywen.webp",
+  "name": "艾维文娜",
+  "fetched": "2026-10-09T23:44:36+08:00"
+ },
+ "chr_0014_aurora": {
+  "src": "https://raw.githubusercontent.com/Wanye-7300/baker-dx/957bbd4180dc33a4b8fab6c12dbfcc143a1e9006/assets/extracted/avatar/operator/icon_round_chr_0014_aurora.png",
+  "file": "chr_0014_aurora.webp",
+  "name": "昼雪",
+  "fetched": "2026-10-09T23:44:37+08:00"
+ },
+ "chr_0018_dapan": {
+  "src": "https://raw.githubusercontent.com/Wanye-7300/baker-dx/957bbd4180dc33a4b8fab6c12dbfcc143a1e9006/assets/extracted/avatar/operator/icon_round_chr_0018_dapan.png",
+  "file": "chr_0018_dapan.webp",
+  "name": "大潘",
+  "fetched": "2026-10-09T23:44:38+08:00"
+ },
+ "chr_0024_deepfin": {
+  "src": "https://raw.githubusercontent.com/Wanye-7300/baker-dx/957bbd4180dc33a4b8fab6c12dbfcc143a1e9006/assets/extracted/avatar/operator/icon_round_chr_0024_deepfin.png",
+  "file": "chr_0024_deepfin.webp",
+  "name": "阿列什",
+  "fetched": "2026-10-09T23:44:40+08:00"
+ },
+ "chr_0038_purrche": {
+  "src": "https://raw.githubusercontent.com/Wanye-7300/baker-dx/957bbd4180dc33a4b8fab6c12dbfcc143a1e9006/assets/extracted/avatar/operator/icon_round_chr_0038_purrche.png",
+  "file": "chr_0038_purrche.webp",
+  "name": "噗切娜",
+  "fetched": "2026-10-09T23:44:41+08:00"
+ },
+ "chr_0019_karin": {
+  "src": "https://raw.githubusercontent.com/Wanye-7300/baker-dx/957bbd4180dc33a4b8fab6c12dbfcc143a1e9006/assets/extracted/avatar/operator/icon_round_chr_0019_karin.png",
+  "file": "chr_0019_karin.webp",
+  "name": "秋栗",
+  "fetched": "2026-10-09T23:44:42+08:00"
+ },
+ "chr_0020_meurs": {
+  "src": "https://raw.githubusercontent.com/Wanye-7300/baker-dx/957bbd4180dc33a4b8fab6c12dbfcc143a1e9006/assets/extracted/avatar/operator/icon_round_chr_0020_meurs.png",
+  "file": "chr_0020_meurs.webp",
+  "name": "卡契尔",
+  "fetched": "2026-10-09T23:44:43+08:00"
+ },
+ "chr_0021_whiten": {
+  "src": "https://raw.githubusercontent.com/Wanye-7300/baker-dx/957bbd4180dc33a4b8fab6c12dbfcc143a1e9006/assets/extracted/avatar/operator/icon_round_chr_0021_whiten.png",
+  "file": "chr_0021_whiten.webp",
+  "name": "埃特拉",
+  "fetched": "2026-10-09T23:44:44+08:00"
+ },
+ "chr_0022_bounda": {
+  "src": "https://raw.githubusercontent.com/Wanye-7300/baker-dx/957bbd4180dc33a4b8fab6c12dbfcc143a1e9006/assets/extracted/avatar/operator/icon_round_chr_0022_bounda.png",
+  "file": "chr_0022_bounda.webp",
+  "name": "萤石",
+  "fetched": "2026-10-09T23:44:45+08:00"
+ },
+ "chr_0023_antal": {
+  "src": "https://raw.githubusercontent.com/Wanye-7300/baker-dx/957bbd4180dc33a4b8fab6c12dbfcc143a1e9006/assets/extracted/avatar/operator/icon_round_chr_0023_antal.png",
+  "file": "chr_0023_antal.webp",
+  "name": "安塔尔",
+  "fetched": "2026-10-09T23:44:46+08:00"
+ },
+ "_missing": [
+  "chr_9000_endmin"
+ ]
+}

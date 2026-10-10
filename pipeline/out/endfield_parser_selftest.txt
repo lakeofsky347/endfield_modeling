@@ -1,0 +1,92 @@
+
+=== meta
+  reviewedFixedHitSkills                                            0/1      ok (  0.00%)
+  skillWarningCounts.blackboardFallback                             0/1      ok (  0.00%)
+  skillWarningCounts.nonDamageLabels                                0/1      ok (  0.00%)
+  skillWarningCounts.ordinaryBranches                               0/1      ok (  0.00%)
+  skillWarningCounts.unresolvedHitCounts                            0/1      ok (  0.00%)
+  source_digest                                                     0/1      ok (  0.00%)
+  leaf match: 30/36 (83.33%)
+
+=== constants
+  leaf match: 13/13 (100.00%)
+
+=== attributes: A=101 B=101 shared=101 fully-equal=101
+  only in B (0): []
+  only in A (0): []
+  leaf match: 606/606 (100.00%)
+
+=== composites
+  leaf match: 8/8 (100.00%)
+
+=== elements: A=5 B=5 shared=5 fully-equal=5
+  only in B (0): []
+  only in A (0): []
+  leaf match: 35/35 (100.00%)
+
+=== weaponTypes: A=5 B=5 shared=5 fully-equal=5
+  only in B (0): []
+  only in A (0): []
+  leaf match: 5/5 (100.00%)
+
+=== damageTakenLevels
+  leaf match: 10/10 (100.00%)
+
+=== characters: A=34 B=34 shared=34 fully-equal=1
+  only in B (0): []
+  only in A (0): []
+  skills[].alternate                                              352/370    ok ( 95.14%)
+  skills[].aoe                                                    368/370    ok ( 99.46%)
+  skills[].attackIndex                                            356/370    ok ( 96.22%)
+  skills[].hits[]                                                   0/20     ok (  0.00%)
+  skills[].hits[].key                                             605/641    ok ( 94.38%)
+  skills[].hits[].source                                          648/681    ok ( 95.15%)
+  skills[].hits[].value                                            40/73     ok ( 54.79%)
+  skills[].kind                                                   355/370    ok ( 95.95%)
+  skills[].levels[].atb                                          4428/4440   ok ( 99.73%)
+  skills[].levels[].excludedMultiplierLabels                     4368/4440   ok ( 98.38%)
+  skills[].levels[].excludedPoiseLabels                          4404/4440   ok ( 99.19%)
+  skills[].levels[].multiplierLabels                             4344/4440   ok ( 97.84%)
+  skills[].levels[].multipliers                                  4176/4440   ok ( 94.05%)
+  skills[].levels[].poise                                        4392/4440   ok ( 98.92%)
+  skills[].levels[].poiseLabels                                  4404/4440   ok ( 99.19%)
+  skills[].levels[].totalMultiplier                              4284/4440   ok ( 96.49%)
+  skills[].levels[].usp                                          4428/4440   ok ( 99.73%)
+  skills[].name                                                   350/370    ok ( 94.59%)
+  skills[].requiresBroken                                         369/370    ok ( 99.73%)
+  skills[].reviewedMechanics                                      368/370    ok ( 99.46%)
+  skills[].variant                                                351/370    ok ( 94.86%)
+  skills[].variantCn                                              351/370    ok ( 94.86%)
+  skills[].warnings                                                 0/370    ok (  0.00%)
+  leaf match: 182488/183822 (99.27%)
+
+=== progression
+  leaf match: 9239/9239 (100.00%)
+
+=== weapons: A=80 B=80 shared=80 fully-equal=80
+  only in B (0): []
+  only in A (0): []
+  leaf match: 11628/11628 (100.00%)
+
+=== equipItems: A=258 B=258 shared=258 fully-equal=258
+  only in B (0): []
+  only in A (0): []
+  leaf match: 8429/8429 (100.00%)
+
+=== equipSuits: A=24 B=24 shared=24 fully-equal=24
+  only in B (0): []
+  only in A (0): []
+  leaf match: 434/434 (100.00%)
+
+=== dummyPresets: A=137 B=137 shared=137 fully-equal=137
+  only in B (0): []
+  only in A (0): []
+  leaf match: 56182/56182 (100.00%)
+
+=== attrMeta: A=101 B=101 shared=101 fully-equal=101
+  only in B (0): []
+  only in A (0): []
+  leaf match: 202/202 (100.00%)
+
+=== attrIconNames
+  leaf match: 101/101 (100.00%)

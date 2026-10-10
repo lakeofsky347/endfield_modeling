@@ -1,0 +1,14 @@
+.DS_Store
+node_modules/
+__pycache__/
+*.pyc
+*.bak*
+*.log
+# raw upstream game data / caches (not redistributed)
+zmd-EndfieldData*/
+cache/
+# official character avatars: copyright of the game publisher, not redistributed here.
+# fetch locally with `python3 assets-src/icons/fetch_icons.py --game <game>`, then build without --no-avatars
+assets-src/icons/*/*.webp
+assets-src/icons/raw/
+dist/*/assets/avatars/

@@ -1,0 +1,11 @@
+{
+  "name": "endfield-damage-sim",
+  "version": "3.1.0",
+  "private": true,
+  "description": "明日方舟：终末地伤害模拟器（终末地 1.5 版本下半，上游 rmxlinux/EndfieldData 8c5305b）",
+  "scripts": {
+    "build": "python3 pipeline/build_pages.py --dist dist",
+    "diff": "python3 pipeline/endfield/diff_endfield.py pipeline/out/endfield.json schema/endfield_embedded_DATA.json --ignore meta.generated_at"
+  },
+  "engines": { "node": ">=18" }
+}

@@ -1,0 +1,84 @@
+
+=== meta
+  generated_at                                                      0/1      ok (  0.00%)
+      @meta
+        A="2026-10-09T03:59:37Z"
+        B="2026-10-08T06:04:33Z"
+  source_commit                                                     0/1      ok (  0.00%)
+      @meta
+        A="37ba36bc1a945ba9bc65d6581778a0898b38dd49"
+        B="8c5305bef8b44404a2be6325fe5063c1ef8bb353"
+  source_digest                                                     0/1      ok (  0.00%)
+      @meta
+        A="sha256:5ad417a5fee325b6f820bf68b166f86997e673ed87178386a126aa0ae41cd3f1"
+        B="sha256:94c7bb59c308db3b556834d7e2a9a8b16c3fbb4d07a01eedfdf5e24bc76649af"
+  source_readme_date                                                0/1      ok (  0.00%)
+      @meta
+        A="2026-10-08"
+        B="2026-09-24"
+  leaf match: 32/36 (88.89%)
+  -- changes:
+    meta :: source_commit: "8c5305bef8b44404a2be6325fe5063c1ef8bb353" -> "37ba36bc1a945ba9bc65d6581778a0898b38dd49"
+    meta :: source_digest: "sha256:94c7bb59c308db3b556834d7e2a9a8b16c3fbb4d07a01eedfdf5e24bc76649af" -> "sha256:5ad417a5fee325b6f820bf68b166f86997e673ed87178386a126aa0ae41cd3f1"
+    meta :: source_readme_date: "2026-09-24" -> "2026-10-08"
+    meta :: generated_at: "2026-10-08T06:04:33Z" -> "2026-10-09T03:59:37Z"
+
+=== constants
+  leaf match: 13/13 (100.00%)
+
+=== attributes: A=101 B=101 shared=101 fully-equal=101
+  only in B (0): []
+  only in A (0): []
+  leaf match: 606/606 (100.00%)
+
+=== composites
+  leaf match: 8/8 (100.00%)
+
+=== elements: A=5 B=5 shared=5 fully-equal=5
+  only in B (0): []
+  only in A (0): []
+  leaf match: 35/35 (100.00%)
+
+=== weaponTypes: A=5 B=5 shared=5 fully-equal=5
+  only in B (0): []
+  only in A (0): []
+  leaf match: 5/5 (100.00%)
+
+=== damageTakenLevels
+  leaf match: 10/10 (100.00%)
+
+=== characters: A=34 B=34 shared=34 fully-equal=34
+  only in B (0): []
+  only in A (0): []
+  leaf match: 183881/183881 (100.00%)
+
+=== progression
+  leaf match: 9239/9239 (100.00%)
+
+=== weapons: A=80 B=80 shared=80 fully-equal=80
+  only in B (0): []
+  only in A (0): []
+  leaf match: 11628/11628 (100.00%)
+
+=== equipItems: A=258 B=258 shared=258 fully-equal=258
+  only in B (0): []
+  only in A (0): []
+  leaf match: 8429/8429 (100.00%)
+
+=== equipSuits: A=24 B=24 shared=24 fully-equal=24
+  only in B (0): []
+  only in A (0): []
+  leaf match: 434/434 (100.00%)
+
+=== dummyPresets: A=137 B=137 shared=137 fully-equal=137
+  only in B (0): []
+  only in A (0): []
+  leaf match: 56182/56182 (100.00%)
+
+=== attrMeta: A=101 B=101 shared=101 fully-equal=101
+  only in B (0): []
+  only in A (0): []
+  leaf match: 202/202 (100.00%)
+
+=== attrIconNames
+  leaf match: 101/101 (100.00%)

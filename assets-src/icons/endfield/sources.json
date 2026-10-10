@@ -1,0 +1,336 @@
+{
+ "source": {
+  "name": "GitHub Wanye-7300/baker-dx assets/extracted/avatar/operator（游戏/森空岛解包头像，156×156 PNG）",
+  "site": "https://github.com/Wanye-7300/baker-dx",
+  "robots": "raw.githubusercontent.com/robots.txt 返回 404；目录列表用 GitHub 公开 REST API（未登录，1 次请求）。",
+  "terms": "仓库 LICENSE 为 MIT（覆盖代码）；assets/extracted/README.md 声明：美术资源著作权归上海鹰角网络（Hypergryph）所有，仓库中的素材“仅供个人学习、研究参考之用，不涉及任何商业用途”，权利人通知即删除。GitHub 服务条款允许访问公开仓库内容。注意：该声明意味着随包再分发尤其需要评估。",
+  "alternatives_considered": "endfield.wiki.gg Category:Operator_icons（120×120，robots 允许，但 Content-Signal use=reference，且需按英文名对应、尺寸小于 128）；arknights.win 媒体包（按英文名命名，非商用）。选 baker-dx 是因为文件名直接带游戏角色 id，不需要按名字猜。",
+  "snapshot": "raw/_robots/bakerdx_LICENSE, raw/_robots/bakerdx_extracted_README.md, raw/_robots/gh_bakerdx_repo.json, raw/_robots/gh_bakerdx_commit.json, raw/_robots/endfield.wiki.gg_robots.txt",
+  "roster_list": "https://github.com/Wanye-7300/baker-dx/tree/957bbd4180dc33a4b8fab6c12dbfcc143a1e9006/assets/extracted/avatar/operator"
+ },
+ "copyright": "头像版权归各游戏厂商所有（鸣潮：库洛游戏 Kuro Games；崩坏：星穹铁道：米哈游 HoYoverse；明日方舟：终末地：上海鹰角网络 Hypergryph/Gryphline）。随包分发前需要 Skylake 自己评估。",
+ "output": {
+  "size": "128x128",
+  "format": "webp RGBA（等比缩放居中，透明填充）",
+  "quality": "80（超过 15KB 时依次降到 75/70/65/60）"
+ },
+ "stats": {
+  "roster": 34,
+  "matched": 33,
+  "total_bytes": 331924,
+  "max_file": {
+   "id": "chr_0025_ardelia",
+   "bytes": 12250
+  },
+  "over_15kb": []
+ },
+ "unmatched": [
+  {
+   "id": "chr_9000_endmin",
+   "name": "管理员（endmin）",
+   "reason": "baker-dx operator 头像中没有与此 id 同名的文件（数据中 playable=false），不套用其他 id 的图"
+  }
+ ],
+ "errors": [],
+ "files": {
+  "chr_0002_endminm": {
+   "bytes": 8780,
+   "quality": 80,
+   "orig_size": [
+    156,
+    156
+   ],
+   "match_rule": "文件名内含与数据完全相同的角色 id"
+  },
+  "chr_0003_endminf": {
+   "bytes": 8682,
+   "quality": 80,
+   "orig_size": [
+    156,
+    156
+   ],
+   "match_rule": "文件名内含与数据完全相同的角色 id"
+  },
+  "chr_0009_azrila": {
+   "bytes": 11378,
+   "quality": 80,
+   "orig_size": [
+    156,
+    156
+   ],
+   "match_rule": "文件名内含与数据完全相同的角色 id"
+  },
+  "chr_0013_aglina": {
+   "bytes": 10118,
+   "quality": 80,
+   "orig_size": [
+    156,
+    156
+   ],
+   "match_rule": "文件名内含与数据完全相同的角色 id"
+  },
+  "chr_0015_lifeng": {
+   "bytes": 10300,
+   "quality": 80,
+   "orig_size": [
+    156,
+    156
+   ],
+   "match_rule": "文件名内含与数据完全相同的角色 id"
+  },
+  "chr_0016_laevat": {
+   "bytes": 10500,
+   "quality": 80,
+   "orig_size": [
+    156,
+    156
+   ],
+   "match_rule": "文件名内含与数据完全相同的角色 id"
+  },
+  "chr_0017_yvonne": {
+   "bytes": 11782,
+   "quality": 80,
+   "orig_size": [
+    156,
+    156
+   ],
+   "match_rule": "文件名内含与数据完全相同的角色 id"
+  },
+  "chr_0025_ardelia": {
+   "bytes": 12250,
+   "quality": 80,
+   "orig_size": [
+    156,
+    156
+   ],
+   "match_rule": "文件名内含与数据完全相同的角色 id"
+  },
+  "chr_0026_lastrite": {
+   "bytes": 11648,
+   "quality": 80,
+   "orig_size": [
+    156,
+    156
+   ],
+   "match_rule": "文件名内含与数据完全相同的角色 id"
+  },
+  "chr_0027_tangtang": {
+   "bytes": 12086,
+   "quality": 80,
+   "orig_size": [
+    156,
+    156
+   ],
+   "match_rule": "文件名内含与数据完全相同的角色 id"
+  },
+  "chr_0028_wulfa": {
+   "bytes": 9646,
+   "quality": 80,
+   "orig_size": [
+    156,
+    156
+   ],
+   "match_rule": "文件名内含与数据完全相同的角色 id"
+  },
+  "chr_0029_pograni": {
+   "bytes": 10582,
+   "quality": 80,
+   "orig_size": [
+    156,
+    156
+   ],
+   "match_rule": "文件名内含与数据完全相同的角色 id"
+  },
+  "chr_0030_zhuangfy": {
+   "bytes": 9928,
+   "quality": 80,
+   "orig_size": [
+    156,
+    156
+   ],
+   "match_rule": "文件名内含与数据完全相同的角色 id"
+  },
+  "chr_0031_mifu": {
+   "bytes": 10734,
+   "quality": 80,
+   "orig_size": [
+    156,
+    156
+   ],
+   "match_rule": "文件名内含与数据完全相同的角色 id"
+  },
+  "chr_0032_lizhiyan": {
+   "bytes": 10960,
+   "quality": 80,
+   "orig_size": [
+    156,
+    156
+   ],
+   "match_rule": "文件名内含与数据完全相同的角色 id"
+  },
+  "chr_0033_camille": {
+   "bytes": 9866,
+   "quality": 80,
+   "orig_size": [
+    156,
+    156
+   ],
+   "match_rule": "文件名内含与数据完全相同的角色 id"
+  },
+  "chr_0034_typhoea": {
+   "bytes": 10082,
+   "quality": 80,
+   "orig_size": [
+    156,
+    156
+   ],
+   "match_rule": "文件名内含与数据完全相同的角色 id"
+  },
+  "chr_0035_liino": {
+   "bytes": 12224,
+   "quality": 80,
+   "orig_size": [
+    156,
+    156
+   ],
+   "match_rule": "文件名内含与数据完全相同的角色 id"
+  },
+  "chr_0004_pelica": {
+   "bytes": 9466,
+   "quality": 80,
+   "orig_size": [
+    156,
+    156
+   ],
+   "match_rule": "文件名内含与数据完全相同的角色 id"
+  },
+  "chr_0005_chen": {
+   "bytes": 11394,
+   "quality": 80,
+   "orig_size": [
+    156,
+    156
+   ],
+   "match_rule": "文件名内含与数据完全相同的角色 id"
+  },
+  "chr_0006_wolfgd": {
+   "bytes": 9530,
+   "quality": 80,
+   "orig_size": [
+    156,
+    156
+   ],
+   "match_rule": "文件名内含与数据完全相同的角色 id"
+  },
+  "chr_0007_ikut": {
+   "bytes": 10050,
+   "quality": 80,
+   "orig_size": [
+    156,
+    156
+   ],
+   "match_rule": "文件名内含与数据完全相同的角色 id"
+  },
+  "chr_0011_seraph": {
+   "bytes": 10034,
+   "quality": 80,
+   "orig_size": [
+    156,
+    156
+   ],
+   "match_rule": "文件名内含与数据完全相同的角色 id"
+  },
+  "chr_0012_avywen": {
+   "bytes": 9274,
+   "quality": 80,
+   "orig_size": [
+    156,
+    156
+   ],
+   "match_rule": "文件名内含与数据完全相同的角色 id"
+  },
+  "chr_0014_aurora": {
+   "bytes": 10502,
+   "quality": 80,
+   "orig_size": [
+    156,
+    156
+   ],
+   "match_rule": "文件名内含与数据完全相同的角色 id"
+  },
+  "chr_0018_dapan": {
+   "bytes": 7632,
+   "quality": 80,
+   "orig_size": [
+    156,
+    156
+   ],
+   "match_rule": "文件名内含与数据完全相同的角色 id"
+  },
+  "chr_0024_deepfin": {
+   "bytes": 11068,
+   "quality": 80,
+   "orig_size": [
+    156,
+    156
+   ],
+   "match_rule": "文件名内含与数据完全相同的角色 id"
+  },
+  "chr_0038_purrche": {
+   "bytes": 6868,
+   "quality": 80,
+   "orig_size": [
+    156,
+    156
+   ],
+   "match_rule": "文件名内含与数据完全相同的角色 id"
+  },
+  "chr_0019_karin": {
+   "bytes": 10184,
+   "quality": 80,
+   "orig_size": [
+    156,
+    156
+   ],
+   "match_rule": "文件名内含与数据完全相同的角色 id"
+  },
+  "chr_0020_meurs": {
+   "bytes": 8574,
+   "quality": 80,
+   "orig_size": [
+    156,
+    156
+   ],
+   "match_rule": "文件名内含与数据完全相同的角色 id"
+  },
+  "chr_0021_whiten": {
+   "bytes": 7748,
+   "quality": 80,
+   "orig_size": [
+    156,
+    156
+   ],
+   "match_rule": "文件名内含与数据完全相同的角色 id"
+  },
+  "chr_0022_bounda": {
+   "bytes": 9076,
+   "quality": 80,
+   "orig_size": [
+    156,
+    156
+   ],
+   "match_rule": "文件名内含与数据完全相同的角色 id"
+  },
+  "chr_0023_antal": {
+   "bytes": 8978,
+   "quality": 80,
+   "orig_size": [
+    156,
+    156
+   ],
+   "match_rule": "文件名内含与数据完全相同的角色 id"
+  }
+ },
+ "request_log_this_run": [],
+ "updated_at": "2026-10-09T23:47:47+08:00"
+}
