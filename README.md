@@ -28,7 +28,7 @@
     pipeline/endfield/             数据构建 build_endfield.py、技能解析、约定表、差异对比 diff_endfield.py（说明见其 README.md）
     pipeline/out/endfield.json     处理后的模拟数据（构建输入）及对比/自检报告
     schema/endfield_embedded_DATA.json  原版页面内嵌的数据（数据结构参照，也是技能解析复用的参考）
-    assets-src/icons/endfield/     干员头像源文件
+    assets-src/icons/endfield/     干员头像（33 张，128×128 webp）
 
 ## 三、重新生成数据（可选）
 
@@ -52,3 +52,9 @@
 - 本地固定版本的数据与实现规则，未通过游戏内实测验证，不能解读为准确率或完整覆盖率
 - 帧率假设 60 fps；部分技能次数/层数未确认的条目在界面上标出
 - ZMD 引擎 bundle 原由 `scripts/zmd/build.mjs` 生成，该构建脚本与引擎源码不在本仓库中；引擎以原版页面内的 bundle 形式保留
+
+## 许可证
+
+- 代码：[MIT](LICENSE)，Copyright (c) 2026 lakeofsky347
+- 游戏数据、干员头像等游戏素材的版权归鹰角网络（Hypergryph / Gryphline）所有，不在 MIT 许可范围内。本仓库收录它们仅用于非商业的同人研究，权利方提出要求即删除
+- 模拟结果基于社区数据整理，仅供娱乐参考，不代表游戏内实际数值
