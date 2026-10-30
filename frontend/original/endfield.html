@@ -580,17 +580,6 @@
 </head>
 <body>
 
-<div id="devHint" class="dev-hint" hidden>
-  <div class="ico" aria-hidden="true">⚠️</div>
-  <h2>引擎未加载，页面无法运行</h2>
-  <p>当前是开发态文件，伤害引擎尚未注入。</p>
-  <p class="hl">请打开 dist/zmd-sim.html（需先运行 node scripts/zmd/build.mjs）</p>
-  <ol>
-    <li>在项目根目录执行 <code>node scripts/zmd/build.mjs</code></li>
-    <li>构建完成后打开 <code>dist/zmd-sim.html</code></li>
-  </ol>
-</div>
-
 <noscript>
   <div class="dev-hint">
     <h2>需要启用 JavaScript</h2>
@@ -601,10 +590,18 @@
 <div id="app" hidden>
 
   <header class="topbar">
-    <div class="topbar-inner masthead">
-      <div class="brand"><span class="brand-mark" aria-hidden="true">E</span><div class="brand-copy"><span class="eyebrow">END FIELD / COMBAT LAB</span><h1>终末地伤害模拟器</h1><span class="sub">无限生命木桩 · 本地计算 · 可复现排轴</span></div></div>
+    <div class="topbar-inner masthead top">
+      <div class="brand logo"><span class="brand-mark" aria-hidden="true">E</span><div class="brand-copy"><span class="eyebrow">END FIELD / COMBAT LAB</span><h1>终末地伤害模拟器</h1><span class="sub">无限生命木桩 · 本地计算 · 可复现排轴</span></div></div>
       <nav class="workspace-nav" aria-label="工作区导航"><a href="#analysisStage">分析结果</a><a href="#teamTitle">配置队伍</a><a href="#coveragePanel">机制覆盖</a></nav>
-      <div class="file-actions"><button type="button" class="btn" id="btnImport">导入配置</button><button type="button" class="btn primary" id="btnExport">导出 JSON</button><button type="button" class="btn" id="btnReset">重置</button><input type="file" id="fileImport" accept=".json,application/json" class="sr-only" aria-label="选择要导入的配置 JSON 文件"></div>
+      <div class="top-more" id="topMore">
+        <div class="file-actions tb"><button type="button" class="btn" id="btnImport">导入配置</button><button type="button" class="btn" id="btnExport">导出 JSON</button><button type="button" class="btn" id="btnReset">重置</button><input type="file" id="fileImport" accept=".json,application/json" class="sr-only" aria-label="选择要导入的配置 JSON 文件"></div>
+      </div>
+      <div class="top-run">
+        <label class="auto-toggle" for="autoCompute"><input type="checkbox" id="autoCompute" checked>自动计算</label>
+        <button type="button" class="btn more-btn" id="moreBtn" aria-expanded="false" aria-controls="topMore">⋯更多</button>
+        <button type="button" class="btn primary pri" id="btnCompute">计算</button>
+      </div>
+      <span class="status" id="runStatus" aria-live="polite"></span>
     </div>
     <details class="control-panel" id="simulationControls">
       <summary>模拟设置<span class="control-summary" id="controlSummary">60 秒 · 数据规则 · 自动搜索</span></summary>
@@ -803,6 +800,7 @@
           </div>
         </div>
         <div class="card-body">
+          <p id="resultStale" class="stale-note" hidden>已过期 · 参数已修改，结果待更新</p>
           <div class="stat-grid" id="statGrid"></div>
 
           <div class="section-label">逐目标状态（最后动作结束时）</div>
@@ -861,7 +859,7 @@
       <section class="card" aria-labelledby="curveTitle">
         <div class="card-head">
           <h2 id="curveTitle">累计伤害曲线</h2>
-          <div class="head-actions"><span class="meta-line">鼠标悬停查看该时刻各人累计值</span></div>
+          <div class="head-actions"><span class="meta-line" id="curveNote">鼠标悬停查看该时刻各人累计值</span></div>
         </div>
         <div class="card-body">
           <div class="chart-wrap">
@@ -3918,8 +3916,11 @@ window.ZMD = ZMD;</script>
    * 开发态容错：直接打开 ui/app.html 时没有引擎
    * ============================================================ */
   if (!ZMD) {
-    var hint = document.getElementById('devHint');
-    if (hint) hint.hidden = false;
+    var hint = document.createElement('div');
+    hint.className = 'dev-hint';
+    hint.setAttribute('role', 'alert');
+    hint.innerHTML = '<div class="ico" aria-hidden="true">⚠️</div><h2>引擎未加载，页面无法运行</h2><p>伤害引擎没有完成初始化，当前页面不能计算。</p>';
+    (document.body || document.documentElement).prepend(hint);
     return;
   }
 
@@ -4297,6 +4298,7 @@ window.ZMD = ZMD;</script>
   state.timelineZoom = 1;
   state.selectedTimelineIndex = null;
   state.trackButtons = [];
+  state.stale = false;
 
   var stored = loadStored();
   state.config = stored ? normalizeConfig(stored) : defaultConfig();
@@ -4511,6 +4513,136 @@ window.ZMD = ZMD;</script>
   }
 
   /* ============================================================
+   * 干员选择器
+   * ============================================================ */
+  var pick = { mode: 'add', index: 0, q: '', el: '', job: '', star: '', opener: null, dlg: null };
+
+  function ensurePicker() {
+    if (pick.dlg) return;
+    var dlg = h('div', {
+      class: 'cpick', id: 'charPicker', hidden: true, role: 'dialog',
+      'aria-modal': 'true', 'aria-labelledby': 'charPickerTitle'
+    });
+    dlg.addEventListener('click', function (ev) { if (ev.target === dlg) closePicker(); });
+    dlg.addEventListener('keydown', function (ev) {
+      if (ev.key === 'Escape') { ev.preventDefault(); closePicker(); }
+    });
+    pick.dlg = dlg;
+    document.body.append(dlg);
+  }
+  function closePicker() {
+    if (!pick.dlg) return;
+    pick.dlg.hidden = true;
+    if (pick.opener && typeof pick.opener.focus === 'function') pick.opener.focus();
+  }
+  function openPicker(opts) {
+    ensurePicker();
+    pick.mode = opts.mode;
+    pick.index = opts.index || 0;
+    pick.opener = document.activeElement;
+    renderPicker();
+    pick.dlg.hidden = false;
+    var search = document.getElementById('charPickerSearch');
+    if (search) search.focus();
+  }
+  function renderPicker() {
+    var dlg = pick.dlg;
+    var qNow = pick.q;
+    dlg.textContent = '';
+    var used = {};
+    state.config.team.forEach(function (m) { used[m.charId] = true; });
+    var currentId = pick.mode === 'replace' && state.config.team[pick.index] ? state.config.team[pick.index].charId : '';
+    var els = [], jobs = [], stars = [];
+    CHARS.forEach(function (c) {
+      if (els.indexOf(c.element) < 0) els.push(c.element);
+      if (c.professionCn && jobs.indexOf(c.professionCn) < 0) jobs.push(c.professionCn);
+      if (stars.indexOf(c.rarity) < 0) stars.push(c.rarity);
+    });
+    stars.sort(function (a, b) { return b - a; });
+    function chip(group, value, label) {
+      var on = String(pick[group]) === String(value);
+      return h('button', {
+        type: 'button', 'aria-pressed': on ? 'true' : 'false', text: label,
+        onclick: function () {
+          pick[group] = String(pick[group]) === String(value) ? '' : value;
+          renderPicker();
+        }
+      });
+    }
+    var filters = h('div', { class: 'cpick-filters' });
+    filters.append(chip('el', '', '全部属性'));
+    els.forEach(function (el) { filters.append(chip('el', el, elCn(el))); });
+    filters.append(chip('job', '', '全部职业'));
+    jobs.forEach(function (job) { filters.append(chip('job', job, job)); });
+    filters.append(chip('star', '', '全部星级'));
+    stars.forEach(function (star) { filters.append(chip('star', String(star), star + '★')); });
+    var q = qNow.trim().toLowerCase();
+    var grid = h('div', { class: 'cpick-grid' });
+    var shown = 0;
+    CHARS.forEach(function (c) {
+      if (pick.el && c.element !== pick.el) return;
+      if (pick.job && c.professionCn !== pick.job) return;
+      if (pick.star && String(c.rarity) !== String(pick.star)) return;
+      var blob = (safeText(c.name, '') + ' ' + (c.engName || '') + ' ' + elCn(c.element) + ' ' + (c.professionCn || '')).toLowerCase();
+      if (q && blob.indexOf(q) < 0) return;
+      shown += 1;
+      var inTeam = !!used[c.id] && c.id !== currentId;
+      var ava = c.avatar
+        ? h('img', { class: 'pick-ava', src: c.avatar, alt: '' })
+        : h('span', { class: 'pick-ava ph', 'aria-hidden': 'true', text: safeText(c.name, '?').slice(0, 1) });
+      grid.append(h('button', {
+        type: 'button', class: 'cpick-item', disabled: inTeam,
+        'aria-current': c.id === currentId ? 'true' : null,
+        onclick: function () { chooseCharacter(c.id); }
+      }, [
+        ava,
+        h('span', { class: 'nm' }, [
+          h('b', { text: safeText(c.name) }),
+          h('small', { text: c.rarity + '★ · ' + elCn(c.element) + ' · ' + safeText(c.professionCn, '未知') + (inTeam ? ' · 已在队' : '') })
+        ])
+      ]));
+    });
+    if (!shown) grid.append(h('p', { class: 'meta-line', text: '没有符合筛选的干员。' }));
+    var search = h('input', {
+      type: 'search', class: 'cpick-search', id: 'charPickerSearch',
+      placeholder: '搜索名称、属性、职业', 'aria-label': '搜索干员', value: qNow,
+      oninput: function (ev) { pick.q = ev.target.value; renderPicker(); }
+    });
+    dlg.append(h('div', { class: 'cpick-panel' }, [
+      h('div', { class: 'cpick-head' }, [
+        h('h2', { id: 'charPickerTitle', text: pick.mode === 'add' ? '添加干员' : '更换干员' }),
+        h('button', { type: 'button', class: 'btn tiny cpick-x', text: '关闭', onclick: closePicker })
+      ]),
+      search,
+      filters,
+      grid
+    ]));
+    var box = document.getElementById('charPickerSearch');
+    if (box) {
+      box.focus();
+      var end = box.value.length;
+      if (box.setSelectionRange) box.setSelectionRange(end, end);
+    }
+  }
+  function chooseCharacter(id) {
+    var mode = pick.mode, idx = pick.index;
+    closePicker();
+    if (mode === 'add') {
+      if (state.config.team.length >= 4) return;
+      if (state.config.team.some(function (m) { return m.charId === id; })) return;
+      state.config.team.push(normalizeMember(ZMD.defaultMember(id), id));
+      state.expanded[state.config.team.length - 1] = true;
+    } else {
+      state.config.team[idx] = normalizeMember(ZMD.defaultMember(id), id);
+      state.expanded[idx] = true;
+      state.sourcesOpen[idx] = false;
+    }
+    state.colors = [];
+    buildTeamPanel();
+    scheduleCompute(true);
+  }
+
+  /* ============================================================
    * 队伍面板
    * ============================================================ */
   function buildTeamPanel() {
@@ -4701,22 +4833,11 @@ window.ZMD = ZMD;</script>
     try { panel = ZMD.computePanel(m, state.config.options); } catch (e) { panel = null; }
 
     /* --- 干员 / 等级 / 潜能 --- */
-    var charSel = h('select', {
-      id: p + 'char', 'aria-label': '第 ' + (idx + 1) + ' 名干员',
-      onchange: function (ev) {
-        var nid = ev.target.value;
-        var fresh = normalizeMember(ZMD.defaultMember(nid), nid);
-        state.config.team[idx] = fresh;
-        state.expanded[idx] = true;
-        state.sourcesOpen[idx] = false;
-        buildTeamPanel();
-        scheduleCompute(true);
-      }
+    var charSel = h('button', {
+      type: 'button', class: 'btn char-pick', id: p + 'char',
+      text: charLabel(char),
+      onclick: function () { openPicker({ mode: 'replace', index: idx }); }
     });
-    CHARS.forEach(function (c) {
-      charSel.append(h('option', { value: c.id, text: charLabel(c) }));
-    });
-    charSel.value = m.charId;
 
     body.append(h('div', { class: 'field' }, [
       h('label', { for: p + 'char', text: '干员（名称 · 稀有度 · 属性 · 职业）' }),
@@ -4749,9 +4870,10 @@ window.ZMD = ZMD;</script>
           scheduleCompute();
         });
       if (!has) {
-        var inp = f.querySelector('input');
-        inp.disabled = true;
-        inp.setAttribute('aria-disabled', 'true');
+        f.querySelectorAll('input').forEach(function (inp) {
+          inp.disabled = true;
+          inp.setAttribute('aria-disabled', 'true');
+        });
       }
       skillWrap.append(f);
     });
@@ -4985,19 +5107,44 @@ window.ZMD = ZMD;</script>
   }
 
   function sliderField(id, label, min, max, step, value, display, onSet, disabled) {
-    var valEl = h('span', { class: 'val', id: id + 'Val', text: display });
+    var hint = h('span', { class: 'numhint', id: id + 'Hint', hidden: true });
+    var num = h('input', {
+      type: 'number', id: id + 'Num', inputmode: 'decimal',
+      'aria-label': label + '数值', 'aria-describedby': id + 'Hint',
+      value: String(value), disabled: !!disabled,
+      oninput: function (ev) {
+        var raw = String(ev.target.value);
+        var v = Number(raw);
+        var snapped = step >= 1 ? Math.round(v) : v;
+        var bad = raw.trim() === '' || !Number.isFinite(v) || snapped < min || snapped > max;
+        if (bad) {
+          ev.target.setAttribute('aria-invalid', 'true');
+          hint.hidden = false;
+          hint.textContent = '范围 ' + min + '–' + max + '，此值未生效';
+          refreshRunStatus();
+          return;
+        }
+        ev.target.removeAttribute('aria-invalid');
+        hint.hidden = true;
+        input.value = String(snapped);
+        if (String(snapped) !== raw) ev.target.value = String(snapped);
+        onSet(snapped);
+      }
+    });
     var input = h('input', {
       type: 'range', id: id, min: String(min), max: String(max), step: String(step),
       value: String(value), disabled: !!disabled,
       oninput: function (ev) {
         var v = Number(ev.target.value);
-        valEl.textContent = String(v);
+        num.value = String(v);
+        num.removeAttribute('aria-invalid');
+        hint.hidden = true;
         onSet(v);
       }
     });
     return h('div', { class: 'field' }, [
       h('label', { for: id, text: label }),
-      h('div', { class: 'ctl' }, [input, valEl])
+      h('div', { class: 'ctl' }, [input, h('span', { class: 'numwrap' }, [num, hint])])
     ]);
   }
 
@@ -5220,6 +5367,56 @@ window.ZMD = ZMD;</script>
     });
   }
 
+  function compareState() {
+    return window.__gcmp && window.__gcmp.state && window.__gcmp.state.on ? window.__gcmp.state : null;
+  }
+  function compareSeriesA() {
+    var cmp = compareState();
+    if (!cmp || !cmp.A || !Array.isArray(cmp.A.timeline)) return null;
+    var pts = [{ t: 0, v: 0 }], sum = 0;
+    cmp.A.timeline.forEach(function (e) {
+      var d = isNum(e.damage) ? e.damage : 0;
+      if (d <= 0) return;
+      sum += d;
+      pts.push({ t: isNum(e.endT) ? e.endT : (isNum(e.t) ? e.t : 0), v: sum });
+    });
+    return pts.length > 1 ? pts : null;
+  }
+  function compareMemberDelta(memberId, damage) {
+    var cmp = compareState();
+    if (!cmp || !cmp.A || !Array.isArray(cmp.A.members) || !isNum(damage)) return null;
+    var found = null;
+    cmp.A.members.forEach(function (m) { if (found === null && m && m.id === memberId) found = m; });
+    if (!found || !isNum(found.damage)) return null;
+    return damage - found.damage;
+  }
+  function updateCurveNote() {
+    var el = document.getElementById('curveNote');
+    if (!el) return;
+    var cmp = compareState();
+    if (!cmp || !cmp.A || !state.result) {
+      el.textContent = '鼠标悬停查看该时刻各人累计值';
+      return;
+    }
+    var a = cmp.A.summary && cmp.A.summary.total;
+    var d = isNum(a) ? state.result.totalDamage - a : null;
+    el.textContent = '对比 A：金色虚线为 A 的累计总伤' + (d === null ? '' : (' · 当前相对 A ' + (d > 0 ? '+' : '') + fmtInt(d)));
+  }
+  function refreshRunStatus() {
+    var n = document.querySelectorAll('input[aria-invalid="true"]').length;
+    var text = n ? ('有 ' + n + ' 项未生效') : (state.stale ? '已过期 · 参数已修改，结果待更新' : (state.error && !state.result ? '失败' : (state.result ? '✓ 已更新' : '')));
+    var el = document.getElementById('runStatus');
+    if (el) {
+      el.textContent = text;
+      el.classList.toggle('bad', n > 0);
+    }
+    var note = document.getElementById('resultStale');
+    if (note) {
+      note.hidden = !(n || state.stale);
+      note.textContent = n ? ('有 ' + n + ' 项未生效') : '已过期 · 参数已修改，结果待更新';
+    }
+  }
+
   function renderBars() {
     var res = state.result;
     if (!res) return;
@@ -5231,17 +5428,25 @@ window.ZMD = ZMD;</script>
     res.byCharacter.forEach(function (c, i) {
       var color = state.colors[i] || elColor(c.element);
       var w = maxShare > 0 ? (c.damage / maxShare) * 100 : 0;
+      var memberId = c.charId || c.id || (state.config.team[i] && state.config.team[i].charId);
+      var actions = (res.timeline || []).filter(function (e) {
+        return e && e.opIndex === i && e.kind !== 'switch' && e.kind !== 'wait' && e.kind !== 'target';
+      }).length;
+      var idle = actions === 0 && !(isNum(c.damage) && c.damage > 0);
+      var delta = compareMemberDelta(memberId, c.damage);
       cw.append(h('div', { class: 'bar-item' }, [
         h('div', { class: 'name', title: safeText(c.name) }, [
           h('span', { class: 'dot', style: 'background:' + color, 'aria-hidden': 'true' }),
-          safeText(c.name)
+          safeText(c.name),
+          idle ? h('span', { class: 'idle-hint', text: '未被排入轴' }) : null
         ]),
         h('div', { class: 'bar-track' }, [
           h('div', { class: 'bar-fill', style: 'width:' + w.toFixed(2) + '%;background:' + color })
         ]),
         h('div', { class: 'num' }, [
           h('b', { text: fmtPct(c.share) }),
-          ' · ' + fmtInt(c.damage)
+          ' · ' + fmtInt(c.damage),
+          delta === null ? null : h('span', { class: 'cmp-delta ' + (delta > 0.5 ? 'up' : delta < -0.5 ? 'down' : 'eq'), text: Math.abs(delta) < 0.5 ? '相对 A ±0' : ('相对 A ' + (delta > 0 ? '+' : '') + fmtInt(delta)) })
         ])
       ]));
     });
@@ -5335,8 +5540,10 @@ window.ZMD = ZMD;</script>
     var plotW = Math.max(10, cssW - padL - padR);
     var plotH = Math.max(10, cssH - padT - padB);
     var series = state.series;
+    var aCurve = compareSeriesA();
     var maxV = 0;
     series.forEach(function (s) { s.forEach(function (p) { if (p.v > maxV) maxV = p.v; }); });
+    if (aCurve) aCurve.forEach(function (p) { if (p.v > maxV) maxV = p.v; });
     if (!(maxV > 0)) maxV = 1;
     var tMax = Math.max(1, isNum(res.simulatedTime) ? res.simulatedTime : res.duration);
 
@@ -5390,6 +5597,18 @@ window.ZMD = ZMD;</script>
       ctx.stroke();
     });
 
+    if (aCurve) {
+      ctx.save();
+      ctx.setLineDash([6, 4]);
+      ctx.strokeStyle = '#fadb14';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(x(aCurve[0].t), y(aCurve[0].v));
+      for (var ai = 1; ai < aCurve.length; ai += 1) ctx.lineTo(x(aCurve[ai].t), y(aCurve[ai].v));
+      ctx.stroke();
+      ctx.restore();
+    }
+
     /* 失衡窗口 */
     (res.breaks || []).forEach(function (b) {
       if (!isNum(b.t)) return;
@@ -5420,6 +5639,12 @@ window.ZMD = ZMD;</script>
         '#' + (i + 1) + ' ' + safeText(char && char.name) + '（' + elCn(char && char.element) + '）'
       ]));
     });
+    if (compareSeriesA()) {
+      lg.append(h('span', { class: 'li' }, [
+        h('span', { class: 'dot', style: 'background:#fadb14', 'aria-hidden': 'true' }),
+        'A 累计（虚线）'
+      ]));
+    }
   }
 
   function bindCurveHover() {
@@ -5609,7 +5834,7 @@ window.ZMD = ZMD;</script>
         state.timelineFilter.opIndex = state.timelineFilter.opIndex === opIndex ? null : opIndex;
         document.getElementById('timelineRoleFilter').value = state.timelineFilter.opIndex === null ? 'all' : String(opIndex);
         renderTimelineTracks(); renderTimeline();
-      } }, [safeText(char && char.name), h('small', { text: '#' + (opIndex + 1) + ' · ' + laneItems.length + ' 个动作' })]), lane]));
+      } }, [safeText(char && char.name), h('small', { text: '#' + (opIndex + 1) + ' · ' + laneItems.length + ' 个动作' + (laneItems.length ? '' : ' · 未被排入轴') })]), lane]));
     });
     if (!items.length) grid.append(h('div', { class: 'empty-note', style: 'padding:14px', text: '当前筛选没有动作。可切换角色或技能类型。' }));
     renderActionInspector();
@@ -5751,11 +5976,19 @@ window.ZMD = ZMD;</script>
   function scheduleCompute(immediate) {
     saveStored(state.config);
     if (state.timer) { clearTimeout(state.timer); state.timer = null; }
+    var auto = document.getElementById('autoCompute');
+    state.stale = true;
+    refreshRunStatus();
+    if (auto && !auto.checked) return;
     if (immediate) { runCompute(); return; }
     state.timer = setTimeout(function () {
       state.timer = null;
       runCompute();
     }, 150);
+  }
+  function computeNow() {
+    if (state.timer) { clearTimeout(state.timer); state.timer = null; }
+    runCompute();
   }
 
   function runCompute() {
@@ -5805,6 +6038,8 @@ window.ZMD = ZMD;</script>
       document.getElementById('curveTip').hidden = true;
       document.getElementById('resultStatus').textContent = '失败';
       document.getElementById('searchBadge').textContent = '—';
+      state.stale = false;
+      refreshRunStatus();
       return;
     }
 
@@ -5822,7 +6057,10 @@ window.ZMD = ZMD;</script>
     drawResourceCurve();
     renderCoverage();
     drawCurve();
+    updateCurveNote();
     bindCurveHover();
+    state.stale = false;
+    refreshRunStatus();
 
     /* 同步成员卡上的攻击力提示 */
     cfg.team.forEach(function (m, i) {
@@ -5933,14 +6171,29 @@ window.ZMD = ZMD;</script>
 
     document.getElementById('btnAddMember').addEventListener('click', function () {
       if (state.config.team.length >= 4) return;
-      var used = state.config.team.map(function (m) { return m.charId; });
-      var next = CHARS.find(function (c) { return used.indexOf(c.id) < 0; });
-      if (!next) next = CHARS[0];
-      state.config.team.push(normalizeMember(ZMD.defaultMember(next.id), next.id));
-      state.expanded[state.config.team.length - 1] = true;
-      state.colors = [];
-      buildTeamPanel();
-      scheduleCompute(true);
+      openPicker({ mode: 'add' });
+    });
+    document.getElementById('btnCompute').addEventListener('click', computeNow);
+    document.getElementById('autoCompute').addEventListener('change', function (ev) {
+      if (ev.target.checked && state.stale) computeNow();
+    });
+    var moreBtn = document.getElementById('moreBtn');
+    var topEl = document.querySelector('.masthead.top');
+    moreBtn.addEventListener('click', function () {
+      var open = topEl.classList.toggle('more-open');
+      moreBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    document.addEventListener('click', function (ev) {
+      if (!topEl.classList.contains('more-open') || topEl.contains(ev.target)) return;
+      topEl.classList.remove('more-open');
+      moreBtn.setAttribute('aria-expanded', 'false');
+    });
+    document.addEventListener('sim:compare', function () {
+      if (!state.result) return;
+      renderBars();
+      renderLegend();
+      drawCurve();
+      updateCurveNote();
     });
 
     document.getElementById('btnReset').addEventListener('click', function () {
@@ -6124,6 +6377,7 @@ window.ZMD = ZMD;</script>
     window.addEventListener('resize', function () {
       if (state.result) { drawCurve(); drawResourceCurve(); }
     });
+    ensurePicker();
 
     // Opening the page must not overwrite an invalid stored import with the
     // fallback defaults. Persist only after a user changes the configuration.

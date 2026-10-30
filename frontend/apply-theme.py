@@ -67,7 +67,7 @@ lazy = [fn for fn in ('breakdown.js', 'compare.js', 'plans-drawer.js') if exists
 if lazy and '__themeV' not in s:
     tv = {fn: sha12(fn) for fn in lazy}
     inj.append('<script>window.__themeV=' + json.dumps(tv, ensure_ascii=False, separators=(',', ':')) + ';</script>')
-for fn in ('gui.js', 'share.js', 'plans.js'):
+for fn in ('gui.js', 'resultbar.js', 'share.js', 'plans.js'):
     if exists(fn) and not has_tag(fn):
         inj.append(f'<script src="{href(fn)}"></script>')
 if not has_tag('avatar.js'): inj.append(f'<script defer src="{href("avatar.js")}"></script>')
