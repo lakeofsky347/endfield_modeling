@@ -1,0 +1,320 @@
+[
+  {
+    "id": "default",
+    "name": "默认队伍",
+    "desc": "引擎默认配置：默认四人队、默认木桩（eny_0018_lbtough），60 秒",
+    "config": {
+      "team": [
+        {
+          "charId": "chr_0002_endminm",
+          "level": 90,
+          "potential": 0,
+          "skillLevels": {
+            "attack": 12,
+            "power": 12,
+            "normal": 12,
+            "combo": 12,
+            "ultimate": 12
+          },
+          "weapon": {
+            "weaponId": "wpn_sword_0021",
+            "level": 90,
+            "progression": {
+              "breakthrough": 4,
+              "potential": 0,
+              "gem": {
+                "terms": []
+              }
+            }
+          },
+          "equips": [
+            {
+              "itemId": "item_equip_t4_parts_wuling00_body_01",
+              "enhanceLevels": [
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "itemId": "item_equip_t4_parts_wuling00_hand_01",
+              "enhanceLevels": [
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "itemId": "item_equip_t4_parts_wuling00_edc_01",
+              "enhanceLevels": [
+                0,
+                0,
+                0,
+                0
+              ]
+            }
+          ],
+          "panelOverride": {},
+          "extraBuffs": [],
+          "disabledEffects": []
+        },
+        {
+          "charId": "chr_0013_aglina",
+          "level": 90,
+          "potential": 0,
+          "skillLevels": {
+            "attack": 12,
+            "power": 12,
+            "normal": 12,
+            "combo": 12,
+            "ultimate": 12
+          },
+          "weapon": {
+            "weaponId": "wpn_funnel_0011",
+            "level": 90,
+            "progression": {
+              "breakthrough": 4,
+              "potential": 0,
+              "gem": {
+                "terms": []
+              }
+            }
+          },
+          "equips": [
+            {
+              "itemId": "item_equip_t4_parts_wuling00_body_01",
+              "enhanceLevels": [
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "itemId": "item_equip_t4_parts_wuling00_hand_01",
+              "enhanceLevels": [
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "itemId": "item_equip_t4_parts_wuling00_edc_01",
+              "enhanceLevels": [
+                0,
+                0,
+                0,
+                0
+              ]
+            }
+          ],
+          "panelOverride": {},
+          "extraBuffs": [],
+          "disabledEffects": []
+        },
+        {
+          "charId": "chr_0009_azrila",
+          "level": 90,
+          "potential": 0,
+          "skillLevels": {
+            "attack": 12,
+            "power": 12,
+            "normal": 12,
+            "combo": 12,
+            "ultimate": 12
+          },
+          "weapon": {
+            "weaponId": "wpn_claym_0007",
+            "level": 90,
+            "progression": {
+              "breakthrough": 4,
+              "potential": 0,
+              "gem": {
+                "terms": []
+              }
+            }
+          },
+          "equips": [
+            {
+              "itemId": "item_equip_t4_parts_wuling00_body_01",
+              "enhanceLevels": [
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "itemId": "item_equip_t4_parts_wuling00_hand_01",
+              "enhanceLevels": [
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "itemId": "item_equip_t4_parts_wuling00_edc_01",
+              "enhanceLevels": [
+                0,
+                0,
+                0,
+                0
+              ]
+            }
+          ],
+          "panelOverride": {},
+          "extraBuffs": [],
+          "disabledEffects": []
+        },
+        {
+          "charId": "chr_0034_typhoea",
+          "level": 90,
+          "potential": 0,
+          "skillLevels": {
+            "attack": 12,
+            "power": 12,
+            "normal": 12,
+            "combo": 12,
+            "ultimate": 12
+          },
+          "weapon": {
+            "weaponId": "wpn_funnel_0019",
+            "level": 90,
+            "progression": {
+              "breakthrough": 4,
+              "potential": 0,
+              "gem": {
+                "terms": []
+              }
+            }
+          },
+          "equips": [
+            {
+              "itemId": "item_equip_t4_parts_wuling00_body_01",
+              "enhanceLevels": [
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "itemId": "item_equip_t4_parts_wuling00_hand_01",
+              "enhanceLevels": [
+                0,
+                0,
+                0,
+                0
+              ]
+            },
+            {
+              "itemId": "item_equip_t4_parts_wuling00_edc_01",
+              "enhanceLevels": [
+                0,
+                0,
+                0,
+                0
+              ]
+            }
+          ],
+          "panelOverride": {},
+          "extraBuffs": [],
+          "disabledEffects": []
+        }
+      ],
+      "dummy": {
+        "count": 1,
+        "level": 90,
+        "presetId": "eny_0018_lbtough",
+        "maxHp": null,
+        "def": null,
+        "resilience": 65,
+        "physicalResistance": 0,
+        "fireResistance": 0,
+        "pulseResistance": 0,
+        "crystResistance": 0,
+        "naturalResistance": 0,
+        "takenScalar": {
+          "Physical": 1,
+          "Fire": 1,
+          "Pulse": 1,
+          "Cryst": 1,
+          "Natural": 1
+        },
+        "damageTakenLevel": 1,
+        "brokenDamageIncrease": 0
+      },
+      "duration": 60,
+      "economy": {
+        "spMax": 300,
+        "spStart": 120,
+        "spRegenPerSecond": 0,
+        "comboWindowSeconds": 10,
+        "inflictionDurationSeconds": 15,
+        "ailmentDurationSeconds": 10,
+        "spPerAttackHit": 12,
+        "spPerPowerHit": 25,
+        "ultMax": 100,
+        "ultStart": 0,
+        "ultPerAttackHit": 3,
+        "ultPerPowerHit": 5,
+        "ultPerSkill": 10,
+        "ultPerCombo": 15,
+        "switchCost": 0.3,
+        "breakDuration": 6,
+        "minCastTime": 0.2
+      },
+      "rotation": {
+        "mode": "auto",
+        "beamWidth": 24,
+        "manual": "",
+        "onBlocked": "wait",
+        "targetIndex": 0
+      },
+      "options": {
+        "expectedCrit": true,
+        "ignoreConditions": false,
+        "combatModel": "snapshot"
+      }
+    },
+    "expectedTotal": 89916.77386346099,
+    "memberIds": [
+      "chr_0002_endminm",
+      "chr_0013_aglina",
+      "chr_0009_azrila",
+      "chr_0034_typhoea"
+    ],
+    "members": [
+      {
+        "id": "chr_0002_endminm",
+        "name": "管理员（男）",
+        "el": "Physical",
+        "avatar": "assets/avatars/chr_0002_endminm.webp"
+      },
+      {
+        "id": "chr_0013_aglina",
+        "name": "洁尔佩塔",
+        "el": "Natural",
+        "avatar": "assets/avatars/chr_0013_aglina.webp"
+      },
+      {
+        "id": "chr_0009_azrila",
+        "name": "余烬",
+        "el": "Fire",
+        "avatar": "assets/avatars/chr_0009_azrila.webp"
+      },
+      {
+        "id": "chr_0034_typhoea",
+        "name": "提弗洛斯",
+        "el": "Natural",
+        "avatar": "assets/avatars/chr_0034_typhoea.webp"
+      }
+    ],
+    "team": "管理员（男）/洁尔佩塔/余烬/提弗洛斯",
+    "expected": 89916.77386346099
+  }
+]

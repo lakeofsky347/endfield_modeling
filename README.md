@@ -4,7 +4,8 @@
 
 纯静态网页，全部计算在浏览器本地完成：组建干员队伍、配置武器与装备、选择敌人（训练假人预设），按动作时间轴结算伤害并拆解到每个技能。
 
-- 数据版本：**终末地 1.5 版本下半**（上游 [rmxlinux/EndfieldData](https://github.com/rmxlinux/EndfieldData) commit `8c5305b`）
+- 发布：**v3.5**（打包 2026-10-13，`dist3-skylake`）。页面上报的计算口径是 **endfield-calc-3.2**：v3.3、v3.4、v3.5 没有改引擎和数值，只更新了共用主题（加载进度、`?v=` 缓存破坏、分享链接、方案/预设/伤害拆解）
+- 数据版本：**终末地 1.5 版本下半**（上游 [rmxlinux/EndfieldData](https://github.com/rmxlinux/EndfieldData) commit `8c5305b`，生成于 2026-10-10T12:33:37Z）
 - 34 名干员、370 个技能、80 把武器、258 件装备、24 个套装、137 个假人预设
 
 ## 一、怎么用
@@ -20,11 +21,12 @@
 
 ## 二、目录
 
-    dist/endfield/                 构建产物（index.html、assets/theme、assets/avatars、data/endfield.json）
+    dist/endfield/                 构建产物（index.html、assets/theme、assets/avatars、data/endfield.json、data/chunks.json）
     frontend/original/endfield.html 原版单文件模拟器页面（ZMD 引擎 bundle + 界面），内嵌的 DATA 字面量已置空，数据见 schema/
-    frontend/theme/                主题样式、WebGL 背景、游戏切换标签栏、头像脚本、图标
-    frontend/apply-theme.py        主题注入脚本（构建时调用）
-    pipeline/build_pages.py        页面构建：从原版页面切出数据改为运行时加载 data/endfield.json，注入低置信标记、头像与主题
+    frontend/theme/                主题样式、WebGL 背景、游戏切换、头像、加载进度与方案/预设/分享/拆解脚本
+    frontend/apply-theme.py        主题注入脚本（构建时调用；主题 URL 加 ?v=内容哈希，并写入部署路径 __SIM_NAV）
+    pipeline/build_pages.py        页面构建：切出内嵌数据、注入低置信标记、头像、分块加载、引擎事件与主题
+    pipeline/shared/               sim_bridge.js、sim_chunks.js（构建时内联进页面；从 v3.5 发布包还原，上游源码不在本仓库）
     pipeline/endfield/             数据构建 build_endfield.py、技能解析、约定表、差异对比 diff_endfield.py（说明见其 README.md）
     pipeline/out/endfield.json     处理后的模拟数据（构建输入）及对比/自检报告
     schema/endfield_embedded_DATA.json  原版页面内嵌的数据（数据结构参照，也是技能解析复用的参考）
@@ -52,6 +54,9 @@
 - 本地固定版本的数据与实现规则，未通过游戏内实测验证，不能解读为准确率或完整覆盖率
 - 帧率假设 60 fps；部分技能次数/层数未确认的条目在界面上标出
 - ZMD 引擎 bundle 原由 `scripts/zmd/build.mjs` 生成，该构建脚本与引擎源码不在本仓库中；引擎以原版页面内的 bundle 形式保留
+- 发布包里的 `pipeline/shared/sim_bridge.js`、`sim_chunks.js` 以及页面上的 v3.2 事件注入，是从构建产物还原的；`frontend/ww/COMPONENTS.md` 里写的约定文档不在本仓库
+- 页面构建会给每条技能补上 `skillIcon: null`、补上空的 `elementIcons`，并给头像 URL 加上 `?v=`。数据构建脚本本身不产出这两项；数值与 v3.1 相同
+- 游戏切换链接指向 skylake 部署路径（`../endfiled_modeling/`，这个拼写是服务器目录）。本仓库只有终末地页面
 
 ## 许可证
 

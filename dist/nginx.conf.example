@@ -28,7 +28,8 @@ server {
         # data: the pages request data/<game>.json?v=<sha256 prefix>, so a content change is a new URL;
         # keep a short max-age + revalidation in case the file is fetched without ?v
         location ~* /data/.*\.json$ { add_header Cache-Control "public, max-age=300, must-revalidate"; }
-        # theme assets are not fingerprinted: cache for a day
+        # theme, avatar, and data URLs include ?v=<sha256 prefix>, so a content change is a new URL;
+        # keep a day of caching as a fallback when a file is fetched without ?v
         location ~* \.(css|js)$ { add_header Cache-Control "public, max-age=86400"; }
     }
 
