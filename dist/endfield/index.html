@@ -1,6 +1,8 @@
 <!doctype html>
 <html lang="zh-CN" data-theme="endfield">
 <head>
+<script data-sim="engine-version">window.__SIM_ENGINE_VERSION__="endfield-calc-3.2";window.__simAssets=window.__simAssets||{game:"endfield",engineVersion:"endfield-calc-3.2"};</script>
+
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="dark">
@@ -577,11 +579,20 @@
   }
   @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { transition: none !important; } }
 </style>
-<link rel="stylesheet" href="assets/theme/common.css">
-<link rel="stylesheet" href="assets/theme/endfield.css">
-<link rel="icon" type="image/svg+xml" href="assets/theme/favicon-endfield.svg">
-<script src="assets/theme/gamenav.js"></script>
-<script defer src="assets/theme/avatar.js"></script>
+<link rel="preload" as="fetch" crossorigin="anonymous" href="data/endfield.json?v=8711cb4ba0cf">
+<link rel="preload" as="fetch" crossorigin="anonymous" href="data/chunks.json?v=c7044ac357e8">
+<link rel="stylesheet" href="assets/theme/common.css?v=ddabf7b0dfee">
+<link rel="stylesheet" href="assets/theme/endfield.css?v=ac4ac0f2a1b6">
+<link rel="stylesheet" href="assets/theme/interact.css?v=721c5324aa65">
+<link rel="icon" type="image/svg+xml" href="assets/theme/favicon-endfield.svg?v=95ad78013b2a">
+<script>window.__SIM_NAV={"hsr":"../hsr_modeling/","endfield":"../endfiled_modeling/","ww":"../wuwa_modeling/","home":null};</script>
+<script src="assets/theme/gamenav.js?v=ac18fde9338d"></script>
+<script>window.__themeV={"breakdown.js":"584ddadd3a76","compare.js":"589630a8b19d","plans-drawer.js":"93fc43657b86"};</script>
+<script src="assets/theme/gui.js?v=52c6b7d150f0"></script>
+<script src="assets/theme/share.js?v=efada0a030d3"></script>
+<script src="assets/theme/plans.js?v=c7a28316e4ce"></script>
+<script defer src="assets/theme/avatar.js?v=2392524c80f5"></script>
+<script defer src="assets/theme/presets.js?v=a211fbff6e97"></script>
 </head>
 <body>
 
@@ -3913,7 +3924,132 @@ return { DATA, validateConfig, getModelCoverage, listScenarioPresets, applyScena
 const ZMD = __req("engine/index.js");
 
 window.ZMD = ZMD;</script>
-<script type="text/x-sim-deferred" data-sim="app">
+<script data-sim="bridge">/* sim bridge v3.2 (pipeline/shared/sim_bridge.js, inlined into every page by the build): engine events + promise plumbing for __simApply,
+ * and the share-link boot (#s=… → SimShare.decode → __simApply). Contract: frontend/ww/COMPONENTS.md「Engine events & API (v3.2)」. ES5. */
+(function (root) {
+  'use strict';
+  if (root.__mkSimBridge) return;
+  function fire(type, detail) {
+    try { document.dispatchEvent(new CustomEvent(type, { detail: detail })); } catch (e) { /* old browsers: no CustomEvent constructor */ }
+  }
+  function jsonClone(x) { return x == null ? x : JSON.parse(JSON.stringify(x)); }
+  /* v3.3 engineVersion: semantic calculation version (pipeline/shared/engine_version.py ENGINE_VERSION, e.g. 'ww-calc-3.3'). The build
+   * also inlines window.__SIM_ENGINE_VERSION__ + a stub window.__simAssets = {game, engineVersion} in <head>, so it is readable before
+   * any data / chunk / computation (share-link decode). Carried on __simAssets / sim:assets and on every sim:result / __simResult. */
+  function wrapShare() {
+    var S = root.SimShare;
+    if (!S || typeof S.decode !== 'function' || S.decode.__simMigrate) return false;
+    var orig = S.decode;
+    var w = function () {
+      var p = orig.apply(this, arguments);
+      return Promise.resolve(p).then(function (r) {
+        var fn = root.__simMigrateConfig;
+        if (r && r.ok && r.config && typeof r.config === 'object' && typeof fn === 'function') {
+          try { var m = fn(r.config, r.engineVersion || null); r.config = m.config; r.migratedKeys = m.filled; r.migratedFrom = m.from; r.migratedKnown = m.known; r.migrationNotices = Array.isArray(m.notices) ? m.notices : []; }   // v3.5: non-revertible model-correction notices
+          catch (e) { r.migrateError = String(e && e.message || e); }
+        }
+        return r;
+      });
+    };
+    w.__simMigrate = true; S.decode = w;
+    return true;
+  }
+  if (root.addEventListener) {   // before theme plans.js boot (its listeners are registered later): DOMContentLoaded + load
+    root.addEventListener('DOMContentLoaded', wrapShare);
+    root.addEventListener('load', wrapShare);
+  }
+  root.__simWrapShare = wrapShare;
+  root.__mkSimBridge = function (game, engineVersion) {
+    var seq = 0, nextId = null, waiters = {};
+    var ev = engineVersion || root.__SIM_ENGINE_VERSION__ || null;
+    var B = {
+      game: game, engineVersion: ev, clone: jsonClone, fire: fire,
+      /** right after data load, before any computation: window.__simAssets = {game, elementIcons} + sim:assets (same detail) */
+      assets: function (elementIcons) {
+        var d = { game: game, engineVersion: ev, elementIcons: jsonClone(elementIcons && typeof elementIcons === 'object' ? elementIcons : {}) };
+        root.__simAssets = d;
+        fire('sim:assets', d);
+        return d;
+      },
+      /** a computation starts: consumes a caller-supplied runId (request) or auto-increments; fires sim:start */
+      begin: function () {
+        var rid = nextId != null ? nextId : String(++seq);
+        nextId = null;
+        fire('sim:start', { game: game, runId: rid });
+        return rid;
+      },
+      /** __simApply: reserve the runId of the next computation; returns {runId, promise} */
+      request: function (rid) {
+        var id = rid != null ? String(rid) : String(++seq);
+        nextId = id;
+        var p = new Promise(function (res, rej) { waiters[id] = { res: res, rej: rej }; });
+        return { runId: id, promise: p };
+      },
+      done: function (rid, detail) {
+        detail.game = game; detail.runId = rid; detail.engineVersion = ev;
+        if (!('searched' in detail)) detail.searched = false;              // v3.3: every game sets these; defaults for safety
+        if (!('rotationSource' in detail)) detail.rotationSource = null;
+        root.__simResult = detail;
+        fire('sim:result', detail);
+        var w = waiters[rid]; if (w) { delete waiters[rid]; w.res(detail); }
+      },
+      fail: function (rid, message, extra) {
+        var d = { game: game, runId: rid, message: String(message == null ? '未知错误' : message) };
+        if (extra && typeof extra === 'object') for (var k in extra) if (!(k in d)) d[k] = extra[k];   // v3.3: {phase:'load', code, chunk, file}
+        fire('sim:error', d);
+        var w = waiters[rid]; if (w) { delete waiters[rid]; var e = new Error(d.message); e.detail = d; w.rej(e); }
+      },
+      /** reject a reserved run that will never start (validation error before the computation) */
+      abort: function (rid, message, extra) { if (nextId === rid) nextId = null; B.fail(rid, message, extra); },
+      /** v3.3: hand over a reserved-but-not-started runId (a computation that fails while loading its chunks) */
+      takeReserved: function () { var r = nextId; nextId = null; return r; },
+      /** after data load: window.__simPresets = list + sim:presets {game, presets} */
+      presets: function (list) {
+        var P = jsonClone(Array.isArray(list) ? list : []);
+        root.__simPresets = P;
+        fire('sim:presets', { game: game, presets: P });
+        return P;
+      },
+      /** page boot: with a share link (#s=…) the default computation is skipped — decode with SimShare and, when ok and no ids are
+       *  missing, __simApply it (exactly one computation, runId 'share'); otherwise (no link / decode failure / missing ids / apply
+       *  failure) runDefault() once. Always fires sim:share {…decode result, applied} first when a link is present. */
+      /** v3.4.1 share-link migration: wraps SimShare.decode once (both the bridge boot path and theme plans.js fromLink call it) so that every
+       *  ok result's config = __simMigrateConfig(config, engineVersion of the link).config (fills only keys missing from the link with the
+       *  defaults of the link's engine version; unknown/missing version → earliest), plus r.migratedKeys / r.migratedFrom.
+       *  Saved local plans (theme store) do not pass through decode and are not migrated (documented limitation). */
+      wrapShare: wrapShare,
+      shareBoot: function (dataVersion, runDefault) {
+        var ran = false;
+        function dflt() { if (ran) return; ran = true; if (typeof runDefault === 'function') runDefault(); }
+        if (!/[#&]s=/.test(String(location.hash || ''))) { dflt(); return; }
+        var go = function () {
+          wrapShare();
+          if (!root.SimShare || typeof root.SimShare.decode !== 'function' || typeof root.__simApply !== 'function') {
+            fire('sim:share', { ok: false, error: 'share-unavailable', missingIds: [], applied: false }); dflt(); return;
+          }
+          var p;
+          try { p = root.SimShare.decode(location.hash, { game: game, dataVersion: dataVersion, engineVersion: ev, findMissingIds: root.__simFindMissingIds }); }
+          catch (e) { p = Promise.resolve({ ok: false, error: 'corrupt', missingIds: [] }); }
+          Promise.resolve(p).then(null, function () { return { ok: false, error: 'corrupt', missingIds: [] }; }).then(function (r) {
+            r = r || { ok: false, error: 'corrupt', missingIds: [] };
+            var apply = !!(r.ok && !(r.missingIds && r.missingIds.length));
+            r.applied = apply;
+            fire('sim:share', r);
+            if (!apply) { dflt(); return; }
+            ran = true;
+            root.__simApply(r.config, { runId: 'share' })['catch'](function (e) {
+              fire('sim:share', { ok: false, error: 'apply-failed', message: String(e && e.message || e), missingIds: [], applied: false });
+              ran = false; dflt();
+            });
+          });
+        };
+        if (root.SimShare || document.readyState === 'complete') go(); else root.addEventListener('load', go);
+      }
+    };
+    return B;
+  };
+})(typeof window !== 'undefined' ? window : this);
+</script><script type="text/x-sim-deferred" data-sim="app">
 (function () {
   'use strict';
 
@@ -3934,6 +4070,9 @@ window.ZMD = ZMD;</script>
     var c = (typeof CHAR_BY_ID !== 'undefined' && CHAR_BY_ID.get(id)) || {}, raw = __EF_RAW[id] || {};
     return h('span', { class: 'gava ' + (size || 'md'), 'data-icon': raw.avatar || null, 'data-el': c.element || raw.element || '', 'data-name': name || c.name || raw.name || String(id || '') });
   }
+  var __SIM = window.__mkSimBridge('endfield', "endfield-calc-3.2");
+  __SIM.assets((window.__SIM_DATA__ || {}).elementIcons);
+  __SIM.presets([{"id": "default", "name": "默认队伍", "desc": "引擎默认配置：默认四人队、默认木桩（eny_0018_lbtough），60 秒", "config": {"team": [{"charId": "chr_0002_endminm", "level": 90, "potential": 0, "skillLevels": {"attack": 12, "power": 12, "normal": 12, "combo": 12, "ultimate": 12}, "weapon": {"weaponId": "wpn_sword_0021", "level": 90, "progression": {"breakthrough": 4, "potential": 0, "gem": {"terms": []}}}, "equips": [{"itemId": "item_equip_t4_parts_wuling00_body_01", "enhanceLevels": [0, 0, 0, 0]}, {"itemId": "item_equip_t4_parts_wuling00_hand_01", "enhanceLevels": [0, 0, 0, 0]}, {"itemId": "item_equip_t4_parts_wuling00_edc_01", "enhanceLevels": [0, 0, 0, 0]}], "panelOverride": {}, "extraBuffs": [], "disabledEffects": []}, {"charId": "chr_0013_aglina", "level": 90, "potential": 0, "skillLevels": {"attack": 12, "power": 12, "normal": 12, "combo": 12, "ultimate": 12}, "weapon": {"weaponId": "wpn_funnel_0011", "level": 90, "progression": {"breakthrough": 4, "potential": 0, "gem": {"terms": []}}}, "equips": [{"itemId": "item_equip_t4_parts_wuling00_body_01", "enhanceLevels": [0, 0, 0, 0]}, {"itemId": "item_equip_t4_parts_wuling00_hand_01", "enhanceLevels": [0, 0, 0, 0]}, {"itemId": "item_equip_t4_parts_wuling00_edc_01", "enhanceLevels": [0, 0, 0, 0]}], "panelOverride": {}, "extraBuffs": [], "disabledEffects": []}, {"charId": "chr_0009_azrila", "level": 90, "potential": 0, "skillLevels": {"attack": 12, "power": 12, "normal": 12, "combo": 12, "ultimate": 12}, "weapon": {"weaponId": "wpn_claym_0007", "level": 90, "progression": {"breakthrough": 4, "potential": 0, "gem": {"terms": []}}}, "equips": [{"itemId": "item_equip_t4_parts_wuling00_body_01", "enhanceLevels": [0, 0, 0, 0]}, {"itemId": "item_equip_t4_parts_wuling00_hand_01", "enhanceLevels": [0, 0, 0, 0]}, {"itemId": "item_equip_t4_parts_wuling00_edc_01", "enhanceLevels": [0, 0, 0, 0]}], "panelOverride": {}, "extraBuffs": [], "disabledEffects": []}, {"charId": "chr_0034_typhoea", "level": 90, "potential": 0, "skillLevels": {"attack": 12, "power": 12, "normal": 12, "combo": 12, "ultimate": 12}, "weapon": {"weaponId": "wpn_funnel_0019", "level": 90, "progression": {"breakthrough": 4, "potential": 0, "gem": {"terms": []}}}, "equips": [{"itemId": "item_equip_t4_parts_wuling00_body_01", "enhanceLevels": [0, 0, 0, 0]}, {"itemId": "item_equip_t4_parts_wuling00_hand_01", "enhanceLevels": [0, 0, 0, 0]}, {"itemId": "item_equip_t4_parts_wuling00_edc_01", "enhanceLevels": [0, 0, 0, 0]}], "panelOverride": {}, "extraBuffs": [], "disabledEffects": []}], "dummy": {"count": 1, "level": 90, "presetId": "eny_0018_lbtough", "maxHp": null, "def": null, "resilience": 65, "physicalResistance": 0, "fireResistance": 0, "pulseResistance": 0, "crystResistance": 0, "naturalResistance": 0, "takenScalar": {"Physical": 1, "Fire": 1, "Pulse": 1, "Cryst": 1, "Natural": 1}, "damageTakenLevel": 1, "brokenDamageIncrease": 0}, "duration": 60, "economy": {"spMax": 300, "spStart": 120, "spRegenPerSecond": 0, "comboWindowSeconds": 10, "inflictionDurationSeconds": 15, "ailmentDurationSeconds": 10, "spPerAttackHit": 12, "spPerPowerHit": 25, "ultMax": 100, "ultStart": 0, "ultPerAttackHit": 3, "ultPerPowerHit": 5, "ultPerSkill": 10, "ultPerCombo": 15, "switchCost": 0.3, "breakDuration": 6, "minCastTime": 0.2}, "rotation": {"mode": "auto", "beamWidth": 24, "manual": "", "onBlocked": "wait", "targetIndex": 0}, "options": {"expectedCrit": true, "ignoreConditions": false, "combatModel": "snapshot"}}, "expectedTotal": 89916.77386346099, "memberIds": ["chr_0002_endminm", "chr_0013_aglina", "chr_0009_azrila", "chr_0034_typhoea"], "members": [{"id": "chr_0002_endminm", "name": "管理员（男）", "el": "Physical", "avatar": "assets/avatars/chr_0002_endminm.webp?v=f2282313b279"}, {"id": "chr_0013_aglina", "name": "洁尔佩塔", "el": "Natural", "avatar": "assets/avatars/chr_0013_aglina.webp?v=b5cb2cf13826"}, {"id": "chr_0009_azrila", "name": "余烬", "el": "Fire", "avatar": "assets/avatars/chr_0009_azrila.webp?v=4651a50e96ce"}, {"id": "chr_0034_typhoea", "name": "提弗洛斯", "el": "Natural", "avatar": "assets/avatars/chr_0034_typhoea.webp?v=06594fc939d8"}], "team": "管理员（男）/洁尔佩塔/余烬/提弗洛斯", "expected": 89916.77386346099}]);
 
   /* ============================================================
    * 开发态容错：直接打开 ui/app.html 时没有引擎
@@ -5500,7 +5639,7 @@ window.ZMD = ZMD;</script>
     var res = state.result;
     var body = document.getElementById('timelineBody');
     body.textContent = '';
-    var tl = filteredTimeline().map(function (item) { return item.entry; });
+    var tlItems = filteredTimeline(), tl = tlItems.map(function (item) { return item.entry; });
     document.getElementById('tlCount').textContent = tl.length + ' 行';
     if (!tl.length) {
       body.append(h('tr', {}, [h('td', { colspan: '7', class: 'empty-note', text: '本次模拟没有产生任何动作。' })]));
@@ -5530,7 +5669,7 @@ window.ZMD = ZMD;</script>
       var teamIdx = state.config.team.findIndex(function (m) { return m.charId === e.charId; });
       if (teamIdx >= 0) color = state.colors[teamIdx] || color;
       var w = maxDmg > 0 && isNum(e.damage) ? Math.max(e.damage > 0 ? 2 : 0, (e.damage / maxDmg) * 90) : 0;
-      frag.append(h('tr', { class: (isSwitch ? 'is-switch ' : '') + (e.broken ? 'is-broken' : '') }, [
+      frag.append(h('tr', { class: (isSwitch ? 'is-switch ' : '') + (e.broken ? 'is-broken' : ''), 'data-act-index': String(tlItems[i].index), tabindex: '0' }, [
         h('td', { class: 'num', text: (isNum(e.t) ? e.t.toFixed(2) : '—') + ' → ' + (isNum(e.endT) ? e.endT.toFixed(2) : '—') }),
         h('td', {}, [
           h('span', { class: 'dot', style: 'display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:6px;background:' + color, 'aria-hidden': 'true' }),
@@ -5781,6 +5920,13 @@ window.ZMD = ZMD;</script>
   }
 
   function runCompute() {
+    var __rid = __SIM.begin(), __cfg = null;
+    try { __cfg = __SIM.clone(state.config); } catch (e) { /* not serialisable */ }
+    try { __runCompute0(); } catch (e) { __SIM.fail(__rid, e && e.message || e); throw e; }
+    if (state.error || !state.result) { __SIM.fail(__rid, state.error || '模拟未返回有效结果'); return; }
+    try { __SIM.done(__rid, __efDetail(state.result, __cfg)); } catch (e) { __SIM.fail(__rid, '结果导出失败：' + (e && e.message || e)); }
+  }
+  function __runCompute0() {
     var cfg = state.config;
     state.colors = computeColors(cfg.team);
     var res = null;
@@ -6149,17 +6295,234 @@ window.ZMD = ZMD;</script>
 
     // Opening the page must not overwrite an invalid stored import with the
     // fallback defaults. Persist only after a user changes the configuration.
-    runCompute();
+    __SIM.shareBoot(((window.__SIM_DATA__ || {}).meta || {}).source_commit || null, runCompute);   // v3.2: share link skips the default run
   }
 
+
+  // ---- v3.2 engine events & API (injected by pipeline/build_pages.py; contract: frontend/ww/COMPONENTS.md) ----
+  function __efDetail(res, cfg) {
+    var by = {};
+    (res.timeline || []).forEach(function (t) {
+      if (!t || !t.damage) return;
+      var k = (t.opIndex != null ? t.opIndex : t.charName) + '|' + (t.skillName || t.skillId || '');
+      if (!by[k]) by[k] = { member: t.charId || (cfg && cfg.team[t.opIndex] || {}).charId || null, opIndex: t.opIndex != null ? t.opIndex : null, name: t.charName || null, skillName: t.skillName || null, skillId: t.skillId || null, count: 0, damage: 0, zones: null };
+      by[k].count += 1; by[k].damage += t.damage;
+    });
+    // v3.3: endfield rotation.mode 'auto' (beam search) / 'greedy' (automatic heuristic) → searched true, rotationSource 'search';
+    // 'manual' → rotationSource 'manual' (presets and share links use the page's own normalized config, there is no fixed preset sequence)
+    var __rm = ((cfg && cfg.rotation) || {}).mode || 'auto';
+    return __SIM.clone({
+      searched: __rm !== 'manual', rotationSource: __rm === 'manual' ? 'manual' : 'search',
+      dataVersion: ((window.__SIM_DATA__ || {}).meta || {}).source_commit || null, config: cfg,
+      summary: { total: res.totalDamage, dps: res.dps, duration: res.duration, simulatedTime: res.simulatedTime, hitCount: res.hitCount,
+        byElement: res.byElement || null, bySkillKind: res.bySkillKind || null },
+      members: (res.byCharacter || []).map(function (c, i) { return { id: c.charId || c.id || (cfg && cfg.team[i] || {}).charId || null, name: c.name || c.charName || null, damage: c.damage, share: c.share != null ? c.share : null }; }),
+      timeline: (res.timeline || []).map(function (t, i) { return { index: i, t: t.t, endT: t.endT, member: t.charId || (cfg && t.opIndex != null && cfg.team[t.opIndex] || {}).charId || null, opIndex: t.opIndex != null ? t.opIndex : null,
+        actor: t.charName || null, skillName: t.skillName || null, skillId: t.skillId || null, kind: t.kind || null, damage: t.damage || 0 }; }),
+      breakdown: { bySkill: Object.keys(by).map(function (k) { return by[k]; }).sort(function (a, b) { return b.damage - a.damage; }), zones: null }
+    });
+  }
+  function __efFindMissing(cfg) {
+    var D = window.__SIM_DATA__ || {}, out = [];
+    function ids(list) { var o = {}; (list || []).forEach(function (x) { if (x && x.id != null) o[x.id] = 1; }); return o; }
+    var C = ids(D.characters), W = ids(D.weapons), Q = ids(D.equipItems);
+    function miss(kind, id, tab) { if (id != null && id !== '' && !tab[id]) out.push(kind + ':' + id); }
+    ((cfg && cfg.team) || []).forEach(function (m) {
+      if (!m) return;
+      miss('character', m.charId, C);
+      if (m.weapon) miss('weapon', m.weapon.weaponId, W);
+      (m.equips || []).forEach(function (q) { if (q) miss('equip', q.itemId, Q); });
+    });
+    return out.filter(function (x, i) { return out.indexOf(x) === i; });
+  }
+  window.__simFindMissingIds = __efFindMissing;
+  window.__simApply = function (config, opts) {
+    opts = opts || {};
+    var q = __SIM.request(opts.runId);
+    try {
+      if (opts.lockRotation) throw new Error('lockRotation 仅鸣潮页面支持（终末地请用 config.rotation.mode = "manual"）');
+      var miss = __efFindMissing(config);
+      if (miss.length) throw new Error('数据中不存在：' + miss.join(', '));
+      var __in = __SIM.clone(config);
+      if (opts.search) { __in.rotation = Object.assign({}, __in.rotation || {}, { mode: 'auto' }); }   // v3.3 opts.search: force the beam search
+      var next = readConfig(__in);
+      if (state.timer) { clearTimeout(state.timer); state.timer = null; }
+      state.config = next; state.expanded = {}; state.sourcesOpen = {}; state.colors = [];
+      syncAll(); saveStored(state.config);
+    } catch (e) { __SIM.abort(q.runId, e && e.message || e); return q.promise; }
+    runCompute();
+    return q.promise;
+  };
   init();
 })();
 </script>
 <script>
+/* sim chunk loader v3.3 (pipeline/shared/sim_chunks.js, inlined into every page by the build, before the sim bridge).
+ * Contract: frontend/ww/COMPONENTS.md「v3.3 数据分块与按需加载」. ES5, no dependencies.
+ *   var L = window.__mkSimChunks(game, { manifestUrl, base, boot: [{id, kind, url, size}], dataVersion, process(entry, text) → payload })
+ *   L.boot() → Promise<{id: payload}>     first-screen chunks (+ the manifest), phase 'boot'
+ *   L.load(ids, phase, meta) → Promise<{id: payload}>   one batch (dedup per chunk, retries, sim:progress / sim:loading / sim:loaded)
+ *   L.prefetch(ids)                       phase 'prefetch', errors swallowed
+ *   L.manifest() → Promise<manifest>,  L.entry(id), L.state()
+ * Chunk failures reject with an Error carrying {code, chunk, file}; the caller decides who gets sim:error (see app). */
+(function (root) {
+  'use strict';
+  if (root.__mkSimChunks) return;
+  var RETRY_MS = [600, 2000], STALL_MS = 20000, TICK_MS = 100;
+  function fire(type, detail) {
+    try { document.dispatchEvent(new CustomEvent(type, { detail: detail })); } catch (e) { /* old browsers */ }
+  }
+  function now() { return (root.performance && performance.now) ? performance.now() : Date.now(); }
+  function err(code, msg, entry) {
+    var e = new Error(msg); e.code = code; e.chunk = entry ? entry.id : null; e.file = entry ? entry.path || entry.url : null; return e;
+  }
+  root.__mkSimChunks = function (game, opts) {
+    opts = opts || {};
+    var M = null, byId = {}, mPromise = null, done = {}, inflight = {}, failed = {}, batchSeq = 0;
+    (opts.boot || []).forEach(function (b) { byId[b.id] = { id: b.id, kind: b.kind, url: b.url, size: b.size || 0, boot: true, path: String(b.url).split('?')[0] }; });
+    var fileProto = String(root.location && root.location.protocol) === 'file:';
+
+    function urlOf(e) { return e.url || ((opts.base || '') + e.path + '?v=' + e.v); }   // base: '' (per-game package) or '../' (legacy shared dist/)
+    function setManifest(m) {
+      if (!m || m.schema !== 'sim-chunks-1' || m.game !== game) throw err('mismatch', '分块清单格式不对（' + (m && m.schema) + ' / ' + (m && m.game) + '）', { id: 'chunks.json', path: 'data/chunks.json' });
+      if (opts.dataVersion != null && m.dataVersion !== opts.dataVersion) throw err('mismatch', '分块清单版本不匹配：页面 ' + opts.dataVersion + '，清单 ' + m.dataVersion + '（可能是缓存的旧文件，请强制刷新）', { id: 'chunks.json', path: 'data/chunks.json' });
+      M = m;
+      (m.chunks || []).forEach(function (c) { var o = byId[c.id] || {}; byId[c.id] = c; if (o.url) c.url = o.url; });
+      root.__simChunks = m;
+      return m;
+    }
+
+    /* one HTTP attempt, streamed: onBytes(n) after every read */
+    function fetchOnce(e, onBytes) {
+      return new Promise(function (resolve, reject) {
+        var ctl = typeof AbortController === 'function' ? new AbortController() : null, timer = null, stalled = false;
+        function arm() { if (!ctl) return; clearTimeout(timer); timer = setTimeout(function () { stalled = true; ctl.abort(); }, STALL_MS); }
+        arm();
+        fetch(urlOf(e), { credentials: 'same-origin', signal: ctl ? ctl.signal : undefined }).then(function (r) {
+          if (!r.ok) { var x = err('http-' + r.status, 'HTTP ' + r.status + '（' + e.path + '）', e); x.noRetry = r.status >= 400 && r.status < 500; throw x; }
+          if (!r.body || typeof r.body.getReader !== 'function' || typeof TextDecoder !== 'function') return r.text().then(function (t) { onBytes(t.length, true); return t; });
+          var rd = r.body.getReader(), dec = new TextDecoder('utf-8'), parts = [], n = 0;
+          return (function pump() {
+            return rd.read().then(function (s) {
+              if (s.done) { parts.push(dec.decode()); onBytes(n, true); return parts.join(''); }
+              n += s.value.byteLength; arm(); parts.push(dec.decode(s.value, { stream: true })); onBytes(n, false);
+              return pump();
+            });
+          })();
+        }).then(function (t) { clearTimeout(timer); resolve(t); }, function (x) {
+          clearTimeout(timer);
+          if (x && x.code) return reject(x);
+          reject(stalled ? err('stall', '下载卡住（' + (STALL_MS / 1000) + ' 秒没有收到数据）：' + e.path, e) : err('network', '网络错误：' + (x && x.message || x) + '（' + e.path + '）', e));
+        });
+      });
+    }
+
+    function getOne(id, B) {
+      if (done[id]) return Promise.resolve(done[id].payload);
+      var e = byId[id];
+      if (inflight[id]) {   // already downloading for another batch (e.g. a prefetch): count it in this batch too
+        var sz = e && e.size || 0; B.total += sz; B.files += 1;
+        return inflight[id].then(function (pl) {
+          B.loaded += sz; B.filesDone += 1;
+          fire('sim:progress', { game: game, phase: B.phase, state: 'done', chunk: id, file: e && e.path, loaded: sz, total: sz, attempt: 1,
+            batch: { id: B.id, loaded: B.loaded, total: B.total, files: B.files, filesDone: B.filesDone, startedAt: B.startedAt } });
+          return pl;
+        });
+      }
+      if (!e) return Promise.reject(err('unknown', '分块清单里没有 ' + id, { id: id, path: id }));
+      if (fileProto) return Promise.reject(err('file-protocol', '请用本地服务器打开（file:// 无法按需加载数据），例如在包目录运行 python3 -m http.server', e));
+      var total = e.size || 0, attempt = 1, last = 0, got = 0;
+      B.total += total; B.files += 1;
+      function prog(state, loaded) {
+        B.loaded += loaded - (B.cur[id] || 0); B.cur[id] = loaded;
+        fire('sim:progress', { game: game, phase: B.phase, state: state, chunk: id, file: e.path, loaded: loaded, total: total, attempt: attempt,
+          batch: { id: B.id, loaded: B.loaded, total: B.total, files: B.files, filesDone: B.filesDone, startedAt: B.startedAt } });
+      }
+      prog('loading', 0);
+      var p = new Promise(function (resolve, reject) {
+        (function tryOnce() {
+          fetchOnce(e, function (n, fin) { got = n; var t = now(); if (fin || t - last >= TICK_MS) { last = t; if (!fin) prog('loading', n); } }).then(function (text) {
+            var payload;
+            try { payload = opts.process ? opts.process(e, text) : text; } catch (x) { throw (x && x.code) ? x : err('parse', '分块内容无法使用（' + e.path + '）：' + (x && x.message || x), e); }
+            B.filesDone += 1; prog('done', total || got);
+            done[id] = { payload: payload }; delete failed[id];
+            resolve(payload);
+          }).then(null, function (x) {
+            if (!x.noRetry && x.code !== 'parse' && x.code !== 'mismatch' && attempt <= RETRY_MS.length) {
+              var wait = RETRY_MS[attempt - 1]; attempt += 1; prog('retry', 0);
+              setTimeout(tryOnce, wait); return;
+            }
+            failed[id] = x.code || 'error'; prog('error', B.cur[id] || 0);
+            reject(x);
+          });
+        })();
+      });
+      inflight[id] = p;
+      var clear = function () { delete inflight[id]; };
+      p.then(clear, clear);
+      return p;
+    }
+
+    function newBatch(phase) { batchSeq += 1; return { id: phase === 'boot' ? 'boot' : phase + ':' + batchSeq, phase: phase, loaded: 0, total: 0, files: 0, filesDone: 0, cur: {}, startedAt: Date.now() }; }
+
+    var L = {
+      game: game,
+      entry: function (id) { return byId[id] || null; },
+      has: function (id) { return !!done[id]; },
+      payload: function (id) { return done[id] ? done[id].payload : undefined; },
+      manifest: function () {
+        if (M) return Promise.resolve(M);
+        if (mPromise) return mPromise;
+        if (fileProto) return Promise.reject(err('file-protocol', '请用本地服务器打开（file:// 无法按需加载数据）', { id: 'chunks.json', path: 'data/chunks.json' }));
+        var me = { id: 'chunks.json', kind: 'manifest', url: opts.manifestUrl, path: 'data/chunks.json' }, attempt = 0;
+        mPromise = new Promise(function (resolve, reject) {
+          (function tryOnce() {
+            attempt += 1;
+            fetchOnce(me, function () {}).then(function (t) { resolve(setManifest(JSON.parse(t))); }).then(null, function (x) {
+              if (!x.noRetry && !(x instanceof SyntaxError) && x.code !== 'mismatch' && attempt <= RETRY_MS.length) { setTimeout(tryOnce, RETRY_MS[attempt - 1]); return; }
+              mPromise = null; reject(x && x.code ? x : err('parse', '分块清单无法解析：' + (x && x.message || x), me));
+            });
+          })();
+        });
+        return mPromise;
+      },
+      /** ids: chunk ids; phase 'boot' | 'lazy' | 'prefetch'; meta.ids = {resonator:[], weapon:[], echo:[]} (echoed in sim:loading / sim:loaded) */
+      load: function (ids, phase, meta) {
+        ids = (ids || []).filter(function (x, i, a) { return x && a.indexOf(x) === i; });
+        var need = ids.filter(function (id) { return !done[id]; });
+        var out = function () { var o = {}; ids.forEach(function (id) { o[id] = done[id] ? done[id].payload : undefined; }); return o; };
+        if (!need.length) return Promise.resolve(out());
+        var B = newBatch(phase || 'lazy'), t0 = Date.now(), quiet = B.phase === 'boot' || B.phase === 'prefetch';
+        var known = need.every(function (id) { return byId[id]; });
+        return (known ? Promise.resolve() : L.manifest()).then(function () {
+          if (!quiet) fire('sim:loading', { game: game, phase: B.phase, batch: B.id, chunks: need.slice(), ids: (meta && meta.ids) || {} });
+          return Promise.all(need.map(function (id) { return getOne(id, B); }));
+        }).then(function () {
+          if (!quiet) fire('sim:loaded', { game: game, phase: B.phase, batch: B.id, chunks: need.slice(), ids: (meta && meta.ids) || {}, bytes: B.loaded, ms: Date.now() - t0 });
+          return out();
+        });
+      },
+      boot: function () {
+        var ids = (opts.boot || []).map(function (b) { return b.id; });
+        var mp = opts.manifestUrl ? L.manifest().then(null, function () { return null; }) : Promise.resolve(null);   // manifest failure is not fatal at boot (retried on first lazy load)
+        return Promise.all([L.load(ids, 'boot'), mp]).then(function (r) { return r[0]; });
+      },
+      prefetch: function (ids) { L.load(ids, 'prefetch').then(null, function () { /* retried when really needed */ }); },
+      state: function () {
+        var all = Object.keys(byId);
+        return { loaded: Object.keys(done), pending: Object.keys(inflight), failed: Object.keys(failed), known: all.length };
+      }
+    };
+    root.__simLoadChunk = function (id) { return L.load([id], 'lazy').then(function (o) { return o[id]; }); };
+    root.__simLoadState = function () { return L.state(); };
+    return L;
+  };
+})(typeof window !== 'undefined' ? window : this);
+
 /* sim data loader (generated by pipeline/build_pages.py) */
 (function () {
 "use strict";
-var CFG = {"game": "endfield", "url": "data/endfield.json?v=e94d817ce47e", "engineGlobal": "ZMD", "requiredKeys": ["meta", "characters", "weapons", "equipItems", "equipSuits", "dummyPresets"], "versionPath": ["meta", "source_commit"], "version": "8c5305bef8b44404a2be6325fe5063c1ef8bb353", "keepText": false};
+var CFG = {"game": "endfield", "url": "data/endfield.json?v=8711cb4ba0cf", "engineGlobal": "ZMD", "requiredKeys": ["meta", "characters", "weapons", "equipItems", "equipSuits", "dummyPresets"], "versionPath": ["meta", "source_commit"], "version": "8c5305bef8b44404a2be6325fe5063c1ef8bb353", "keepText": false, "chunksUrl": "data/chunks.json?v=c7044ac357e8", "base": "", "boot": [{"id": "index", "kind": "index", "url": "data/endfield.json?v=8711cb4ba0cf", "size": 5362392}]};
 function ui(name, arg) {
   function go() {
     var f = window[name];
@@ -6193,10 +6556,15 @@ function boot() {
   ui('__uiReady');
 }
 if (typeof fetch !== 'function') { fail('浏览器不支持 fetch，无法加载数据'); return; }
-fetch(CFG.url, { credentials: 'same-origin' }).then(function (r) {
-  if (!r.ok) throw new Error('数据请求失败：HTTP ' + r.status + '（' + CFG.url + '）');
-  return r.text();
-}, function (e) { throw new Error('数据请求失败：' + (e && e.message || e) + '（' + CFG.url + '）'); }).then(function (text) {
+// v3.3: one data chunk (index) per page, streamed with sim:progress (COMPONENTS.md「v3.3 数据分块与按需加载」); no per-character split yet
+var LD = window.__mkSimChunks(CFG.game, { manifestUrl: CFG.chunksUrl, base: CFG.base, boot: CFG.boot, dataVersion: CFG.version });
+window.__simEnsure = function () { return Promise.resolve([]); };
+window.__simPrefetch = function () {};
+LD.boot().then(function (o) { return o.index; }, function (e) {
+  try { document.dispatchEvent(new CustomEvent('sim:error', { detail: { game: CFG.game, runId: null, message: '数据请求失败：' + (e && e.message || e), phase: 'load',
+    code: (e && e.code) || 'error', chunk: (e && e.chunk) || null, file: (e && e.file) || null } })); } catch (x) { /* old browsers */ }
+  throw new Error('数据请求失败：' + (e && e.message || e) + '（' + CFG.url + '）');
+}).then(function (text) {
   var data;
   try { data = JSON.parse(text); } catch (e) { throw new Error('数据 JSON 解析失败：' + (e && e.message || e)); }
   if (!data || typeof data !== 'object') throw new Error('数据格式错误：顶层不是对象');
@@ -6211,6 +6579,6 @@ fetch(CFG.url, { credentials: 'same-origin' }).then(function (r) {
 })();
 </script>
 
-<script src="assets/theme/bg-webgl.js"></script>
+<script src="assets/theme/bg-webgl.js?v=1e29e5a73db5"></script>
 </body>
 </html>

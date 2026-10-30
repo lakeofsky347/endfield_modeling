@@ -50,7 +50,8 @@ def short(v, n=180):
 class Acc:
     def __init__(s): s.checked = Counter(); s.bad = Counter(); s.ex = defaultdict(list); s.changes = []
     def add(s, path, ok, where, o, r):
-        if any(path.startswith(i) for i in args.ignore): return
+        # --ignore meta.generated_at: the meta section is walked with paths like "generated_at"
+        if any(path == i or path.startswith(i + '.') or i.endswith('.' + path) for i in args.ignore): return
         s.checked[path] += 1
         if not ok:
             s.bad[path] += 1

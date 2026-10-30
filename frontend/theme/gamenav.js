@@ -15,6 +15,20 @@
   };
   var cur = document.documentElement.getAttribute("data-theme") || "";
   var root = document.documentElement.getAttribute("data-gnav-root") || "../";
+  /* 部署路径可配：apply-theme.py --nav '<json>' 在本脚本前注入 window.__SIM_NAV = {hsr, endfield, ww, home}。
+     值为 null 或缺失的游戏不显示（当前页面自己的标签始终显示）；home 为 null 时不显示“返回入口”。
+     没有 __SIM_NAV 时保持默认：../hsr/ ../endfield/ ../ww/，入口 ../ */
+  var NAV = window.__SIM_NAV && typeof window.__SIM_NAV === "object" ? window.__SIM_NAV : null;
+  if (NAV) {
+    GAMES = GAMES.filter(function (g) {
+      var v = NAV[g.id];
+      if (typeof v === "string" && v) { g.href = v; return true; }
+      if (g.id === cur) { g.href = "./"; return true; }
+      return false;
+    });
+    if ("home" in NAV) root = typeof NAV.home === "string" && NAV.home ? NAV.home : null;
+  }
+  function attr(v) { return String(v).replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;"); }
 
   var css = [
     ".gnav{position:relative;z-index:40;display:flex;align-items:stretch;gap:0;height:40px;padding:0 14px;font:500 12.5px/1 'HarmonyOS Sans SC','PingFang SC','Microsoft YaHei',sans-serif;user-select:none;flex:none}",
@@ -67,10 +81,10 @@
     var st = document.createElement("style"); st.id = "gnav-css"; st.textContent = css; document.head.appendChild(st);
     var nav = document.createElement("nav");
     nav.className = "gnav"; nav.setAttribute("aria-label", "切换游戏");
-    var h = '<a class="home" href="' + root + '" title="返回入口"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="2" width="5" height="5"/><rect x="9" y="2" width="5" height="5"/><rect x="2" y="9" width="5" height="5"/><rect x="9" y="9" width="5" height="5"/></svg><span>模拟器</span></a><div class="tabs">';
+    var h = root == null ? '<div class="tabs">' : ('<a class="home" href="' + attr(root) + '" title="返回入口"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="2" width="5" height="5"/><rect x="9" y="2" width="5" height="5"/><rect x="2" y="9" width="5" height="5"/><rect x="9" y="9" width="5" height="5"/></svg><span>模拟器</span></a><div class="tabs">');
     GAMES.forEach(function (g, i) {
       var on = g.id === cur;
-      h += '<a class="tab' + (on ? " on" : "") + '" data-idx="0' + (i + 1) + '" href="' + g.href + '"' + (on ? ' aria-current="page"' : "") + '>' + g.name + '<span class="en">' + g.en + "</span></a>";
+      h += '<a class="tab' + (on ? " on" : "") + '" data-idx="0' + (i + 1) + '" href="' + attr(g.href) + '"' + (on ? ' aria-current="page"' : "") + '>' + g.name + '<span class="en">' + g.en + "</span></a>";
     });
     nav.innerHTML = h + "</div>";
     document.body.insertBefore(nav, document.body.firstChild);
