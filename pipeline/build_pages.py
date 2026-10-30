@@ -367,8 +367,8 @@ def patch_endfield_app(app):
                        "h('span', { class: 'swatch', style: 'background:' + color, 'aria-hidden': 'true' }),\n        __gava(char.id, 'md', char.name),\n        h('span', { class: 'mname', text: '#' + (idx + 1) + ' ' + safeText(char.name) }),", L)
     app = must_replace(app, "h('label', { for: p + 'char', text: '干员（名称 · 稀有度 · 属性 · 职业）' }),\n      charSel",
                        "h('label', { for: p + 'char', text: '干员（名称 · 稀有度 · 属性 · 职业）' }),\n      h('div', { style: 'display:flex;gap:8px;align-items:center' }, [__gava(m.charId, 'md'), charSel])", L)
-    app = must_replace(app, "} }, [safeText(char && char.name), h('small', { text: '#' + (opIndex + 1) + ' · ' + laneItems.length + ' 个动作' })]), lane]));",
-                       "} }, [__gava(member.charId, 'sm', char && char.name), safeText(char && char.name), h('small', { text: '#' + (opIndex + 1) + ' · ' + laneItems.length + ' 个动作' })]), lane]));", L)
+    app = must_replace(app, "} }, [safeText(char && char.name), h('small', { text: '#' + (opIndex + 1) + ' · ' + laneItems.length + ' 个动作' + (laneItems.length ? '' : ' · 未被排入轴') })]), lane]));",
+                       "} }, [__gava(member.charId, 'sm', char && char.name), safeText(char && char.name), h('small', { text: '#' + (opIndex + 1) + ' · ' + laneItems.length + ' 个动作' + (laneItems.length ? '' : ' · 未被排入轴') })]), lane]));", L)
     return app
 
 
